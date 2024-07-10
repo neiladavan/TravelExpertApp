@@ -32,8 +32,8 @@
             btnPackages = new Button();
             btnProducts = new Button();
             btnSuppliers = new Button();
-            button1 = new Button();
-            button2 = new Button();
+            btnAdd = new Button();
+            btnExit = new Button();
             _mainDataGridView = new DataGridView();
             panMenu.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)_mainDataGridView).BeginInit();
@@ -59,6 +59,7 @@
             btnPackages.TabIndex = 2;
             btnPackages.Text = "Packages";
             btnPackages.UseVisualStyleBackColor = true;
+            btnPackages.Click += btnPackages_Click;
             // 
             // btnProducts
             // 
@@ -78,23 +79,24 @@
             btnSuppliers.Text = "Suppliers";
             btnSuppliers.UseVisualStyleBackColor = true;
             // 
-            // button1
+            // btnAdd
             // 
-            button1.Location = new Point(217, 399);
-            button1.Name = "button1";
-            button1.Size = new Size(94, 29);
-            button1.TabIndex = 2;
-            button1.Text = "Add";
-            button1.UseVisualStyleBackColor = true;
+            btnAdd.Location = new Point(128, 336);
+            btnAdd.Name = "btnAdd";
+            btnAdd.Size = new Size(330, 29);
+            btnAdd.TabIndex = 2;
+            btnAdd.Text = "Add Button";
+            btnAdd.UseVisualStyleBackColor = true;
+            btnAdd.Click += btnAdd_Click;
             // 
-            // button2
+            // btnExit
             // 
-            button2.Location = new Point(489, 399);
-            button2.Name = "button2";
-            button2.Size = new Size(94, 29);
-            button2.TabIndex = 3;
-            button2.Text = "Exit";
-            button2.UseVisualStyleBackColor = true;
+            btnExit.Location = new Point(702, 421);
+            btnExit.Name = "btnExit";
+            btnExit.Size = new Size(94, 29);
+            btnExit.TabIndex = 3;
+            btnExit.Text = "&Exit";
+            btnExit.UseVisualStyleBackColor = true;
             // 
             // _mainDataGridView
             // 
@@ -104,6 +106,7 @@
             _mainDataGridView.RowHeadersWidth = 51;
             _mainDataGridView.Size = new Size(671, 330);
             _mainDataGridView.TabIndex = 4;
+            _mainDataGridView.CellClick += _mainDataGridView_CellClick;
             // 
             // frmLandingPage
             // 
@@ -111,8 +114,8 @@
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
             Controls.Add(_mainDataGridView);
-            Controls.Add(button2);
-            Controls.Add(button1);
+            Controls.Add(btnExit);
+            Controls.Add(btnAdd);
             Controls.Add(panMenu);
             Name = "frmLandingPage";
             StartPosition = FormStartPosition.CenterScreen;
@@ -129,8 +132,8 @@
         private Button btnPackages;
         private Button btnProducts;
         private Button btnSuppliers;
-        private Button button1;
-        private Button button2;
+        private Button btnAdd;
+        private Button btnExit;
         private DataGridView _mainDataGridView;
     }
 }
