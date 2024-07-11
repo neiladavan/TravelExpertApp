@@ -1,3 +1,5 @@
+using System.Security.Cryptography;
+using System.Text;
 using TravelExpertData;
 
 namespace TravelExpertGUI
@@ -23,16 +25,11 @@ namespace TravelExpertGUI
             _mainDataGridView.Columns.Clear();
         }
 
-        private void btnPackages_Click(object sender, EventArgs e)
-        {
-            updateTableContext("Packages");
-        }
-
         private void updateTableContext(string tableName)
         {
-            btnAdd.Enabled = true;
+            string splitTableName = splitByCapitalLetter(tableName);
             _mainDataGridView.Columns.Clear();
-            btnAdd.Text = $"Add {tableName}";
+            btnAdd.Text = $"Add {splitTableName}";
             selectedTable = tableName;
             switch (tableName)
             {
@@ -40,12 +37,38 @@ namespace TravelExpertGUI
                     _mainDataGridView.DataSource = PackageDB.GetPackages();
                     break;
                 case "Products":
+                    break;
                 case "Suppliers":
+                    break;
+                case "ProductsSuppliers":
+                    _mainDataGridView.DataSource = ProductsSupplierDB.GetProductsSuppliersAsNames();
+                    break;
                 default:
                     break;
             }
             addModifyAndDeleteButtonsToDGV();
+            
+            foreach(DataGridViewColumn col in _mainDataGridView.Columns)
+            {
+                col.HeaderText = splitByCapitalLetter(col.HeaderText);
+            }
             _mainDataGridView.AutoResizeColumns();
+            btnAdd.Enabled = true;
+        }
+
+
+        // https://stackoverflow.com/questions/4488969/split-a-string-by-capital-letters Author: Guffa
+        private static string splitByCapitalLetter(string originalString)
+        {
+            string splitOriginalString;
+            StringBuilder builder = new StringBuilder();
+            foreach (char c in originalString)
+            {
+                if (Char.IsUpper(c) && builder.Length > 0) builder.Append(' ');
+                builder.Append(c);
+            }
+            splitOriginalString = builder.ToString();
+            return splitOriginalString;
         }
 
         private void addModifyAndDeleteButtonsToDGV()
@@ -71,14 +94,57 @@ namespace TravelExpertGUI
 
         private void btnAdd_Click(object sender, EventArgs e)
         {
+            frmAddModifyItem frmAddModifyItem = new frmAddModifyItem();
+            frmAddModifyItem.Text = $"Add {splitByCapitalLetter(selectedTable).ToString()}";
             switch (selectedTable)
             {
                 case "Packages":
                     System.Diagnostics.Debug.WriteLine("Packages table is selected");
                     break;
+                case "ProductsSuppliers":
+                    System.Diagnostics.Debug.WriteLine("Products supplier table is selected");
+                    // this should be replaced with a foreach loop on an array?
+                    // and all this to its own method
+                    Label lblProduct = new Label();
+                    lblProduct.AutoSize = true;
+                    lblProduct.Text = "Product:";
+                    lblProduct.Location = new Point(5, 5);
+                    frmAddModifyItem.Controls.Add(lblProduct);
+                    
+                    List<Product> products = new List<Product>(); 
+                    products = ProductDB.GetProducts();
+                    ComboBox cboProduct = new ComboBox();
+                    cboProduct.DataSource = products;
+                    cboProduct.DisplayMember = "ProdName";
+                    cboProduct.ValueMember = "ProductId";
+                    cboProduct.Width = 300;
+                    cboProduct.Location = new Point(70, 5);
+                    frmAddModifyItem.Controls.Add(cboProduct);
+
+                    Label lblSupplier = new Label();
+                    lblSupplier.AutoSize = true;
+                    lblSupplier.Text = "Supplier:";
+                    lblSupplier.Location = new Point(5, 70);
+                    frmAddModifyItem.Controls.Add(lblSupplier);
+
+                    List<Supplier> suppliers = new List<Supplier>();
+                    suppliers = SupplierDB.GetSuppliers();
+                    ComboBox cboSupplier = new ComboBox();
+                    cboSupplier.DataSource = suppliers;
+                    cboSupplier.DisplayMember = "SupName";
+                    cboSupplier.ValueMember = "SupplierId";
+                    cboSupplier.Width = 300;
+                    cboSupplier.Location = new Point(70, 70);
+                    frmAddModifyItem.Controls.Add(cboSupplier);
+
+                    frmAddModifyItem.Size = new Size(0, 0);
+                    frmAddModifyItem.AutoSize = true;
+
+                    break;
                 default:
                     break;
             }
+            DialogResult result = frmAddModifyItem.ShowDialog();
         }
 
         private void DeleteItem()
@@ -120,6 +186,15 @@ namespace TravelExpertGUI
                     }
                 }
             }
+        }
+
+        private void btnPackages_Click(object sender, EventArgs e)
+        {
+            updateTableContext("Packages");
+        }
+        private void btnProductsSuppliers_Click(object sender, EventArgs e)
+        {
+            updateTableContext("ProductsSuppliers");
         }
     }
 }

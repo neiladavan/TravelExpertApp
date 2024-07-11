@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             panMenu = new Panel();
+            btnProductsSuppliers = new Button();
             btnPackages = new Button();
             btnProducts = new Button();
             btnSuppliers = new Button();
@@ -42,6 +43,7 @@
             // panMenu
             // 
             panMenu.BackColor = Color.SteelBlue;
+            panMenu.Controls.Add(btnProductsSuppliers);
             panMenu.Controls.Add(btnPackages);
             panMenu.Controls.Add(btnProducts);
             panMenu.Controls.Add(btnSuppliers);
@@ -51,11 +53,21 @@
             panMenu.Size = new Size(122, 450);
             panMenu.TabIndex = 0;
             // 
+            // btnProductsSuppliers
+            // 
+            btnProductsSuppliers.Location = new Point(19, 227);
+            btnProductsSuppliers.Name = "btnProductsSuppliers";
+            btnProductsSuppliers.Size = new Size(94, 50);
+            btnProductsSuppliers.TabIndex = 3;
+            btnProductsSuppliers.Text = "Products Suppliers";
+            btnProductsSuppliers.UseVisualStyleBackColor = true;
+            btnProductsSuppliers.Click += btnProductsSuppliers_Click;
+            // 
             // btnPackages
             // 
-            btnPackages.Location = new Point(19, 156);
+            btnPackages.Location = new Point(19, 157);
             btnPackages.Name = "btnPackages";
-            btnPackages.Size = new Size(94, 29);
+            btnPackages.Size = new Size(94, 30);
             btnPackages.TabIndex = 2;
             btnPackages.Text = "Packages";
             btnPackages.UseVisualStyleBackColor = true;
@@ -63,9 +75,9 @@
             // 
             // btnProducts
             // 
-            btnProducts.Location = new Point(19, 86);
+            btnProducts.Location = new Point(19, 87);
             btnProducts.Name = "btnProducts";
-            btnProducts.Size = new Size(94, 29);
+            btnProducts.Size = new Size(94, 30);
             btnProducts.TabIndex = 1;
             btnProducts.Text = "Products";
             btnProducts.UseVisualStyleBackColor = true;
@@ -74,7 +86,7 @@
             // 
             btnSuppliers.Location = new Point(19, 17);
             btnSuppliers.Name = "btnSuppliers";
-            btnSuppliers.Size = new Size(94, 29);
+            btnSuppliers.Size = new Size(94, 30);
             btnSuppliers.TabIndex = 0;
             btnSuppliers.Text = "Suppliers";
             btnSuppliers.UseVisualStyleBackColor = true;
@@ -135,5 +147,6 @@
         private Button btnAdd;
         private Button btnExit;
         private DataGridView _mainDataGridView;
+        private Button btnProductsSuppliers;
     }
 }
