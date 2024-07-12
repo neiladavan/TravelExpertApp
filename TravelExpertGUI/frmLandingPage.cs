@@ -94,8 +94,6 @@ namespace TravelExpertGUI
 
         private void btnAdd_Click(object sender, EventArgs e)
         {
-            frmAddModifyItem frmAddModifyItem = new frmAddModifyItem();
-            frmAddModifyItem.Text = $"Add {splitByCapitalLetter(selectedTable).ToString()}";
             switch (selectedTable)
             {
                 case "Packages":
@@ -103,48 +101,19 @@ namespace TravelExpertGUI
                     break;
                 case "ProductsSuppliers":
                     System.Diagnostics.Debug.WriteLine("Products supplier table is selected");
-                    // this should be replaced with a foreach loop on an array?
-                    // and all this to its own method
-                    Label lblProduct = new Label();
-                    lblProduct.AutoSize = true;
-                    lblProduct.Text = "Product:";
-                    lblProduct.Location = new Point(5, 5);
-                    frmAddModifyItem.Controls.Add(lblProduct);
-                    
-                    List<Product> products = new List<Product>(); 
-                    products = ProductDB.GetProducts();
-                    ComboBox cboProduct = new ComboBox();
-                    cboProduct.DataSource = products;
-                    cboProduct.DisplayMember = "ProdName";
-                    cboProduct.ValueMember = "ProductId";
-                    cboProduct.Width = 300;
-                    cboProduct.Location = new Point(70, 5);
-                    frmAddModifyItem.Controls.Add(cboProduct);
-
-                    Label lblSupplier = new Label();
-                    lblSupplier.AutoSize = true;
-                    lblSupplier.Text = "Supplier:";
-                    lblSupplier.Location = new Point(5, 70);
-                    frmAddModifyItem.Controls.Add(lblSupplier);
-
-                    List<Supplier> suppliers = new List<Supplier>();
-                    suppliers = SupplierDB.GetSuppliers();
-                    ComboBox cboSupplier = new ComboBox();
-                    cboSupplier.DataSource = suppliers;
-                    cboSupplier.DisplayMember = "SupName";
-                    cboSupplier.ValueMember = "SupplierId";
-                    cboSupplier.Width = 300;
-                    cboSupplier.Location = new Point(70, 70);
-                    frmAddModifyItem.Controls.Add(cboSupplier);
-
-                    frmAddModifyItem.Size = new Size(0, 0);
-                    frmAddModifyItem.AutoSize = true;
-
+                    frmAddModifyProductsSuppliers frmAddProductsSuppliers = new frmAddModifyProductsSuppliers();
+                    DialogResult result = frmAddProductsSuppliers.ShowDialog();
+                    if(result == DialogResult.OK)
+                    {
+                        ProductsSupplier productsSupplier = frmAddProductsSuppliers.ProductsSupplier;
+                        ProductsSupplierDB.AddProductSupplier(productsSupplier);
+                    }
                     break;
                 default:
                     break;
+            
             }
-            DialogResult result = frmAddModifyItem.ShowDialog();
+            updateTableContext(selectedTable);
         }
 
         private void DeleteItem()
