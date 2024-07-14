@@ -1,6 +1,7 @@
 using System.Security.Cryptography;
 using System.Text;
 using TravelExpertData;
+using System.Linq;
 
 namespace TravelExpertGUI
 {
@@ -37,6 +38,12 @@ namespace TravelExpertGUI
                     _mainDataGridView.DataSource = PackageDB.GetPackages();
                     break;
                 case "Products":
+                    _mainDataGridView.DataSource = ProductDB.GetProducts();
+                    var productSuppliersColumn = _mainDataGridView.Columns.OfType<DataGridViewColumn>().Where(column => column.Name == "ProductsSuppliers").First();
+                    if(productSuppliersColumn != null)
+                    {
+                        _mainDataGridView.Columns.Remove(productSuppliersColumn);
+                    }
                     break;
                 case "Suppliers":
                     break;
@@ -47,8 +54,8 @@ namespace TravelExpertGUI
                     break;
             }
             addModifyAndDeleteButtonsToDGV();
-            
-            foreach(DataGridViewColumn col in _mainDataGridView.Columns)
+
+            foreach (DataGridViewColumn col in _mainDataGridView.Columns)
             {
                 col.HeaderText = splitByCapitalLetter(col.HeaderText);
             }
@@ -164,6 +171,16 @@ namespace TravelExpertGUI
         private void btnProductsSuppliers_Click(object sender, EventArgs e)
         {
             updateTableContext("ProductsSuppliers");
+        }
+
+        private void btnExit_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
+        }
+
+        private void btnProducts_Click(object sender, EventArgs e)
+        {
+            updateTableContext("Products");
         }
     }
 }
