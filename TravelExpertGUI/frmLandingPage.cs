@@ -37,6 +37,7 @@ namespace TravelExpertGUI
                     _mainDataGridView.DataSource = PackageDB.GetPackages();
                     break;
                 case "Products":
+                    _mainDataGridView.DataSource = ProductDB.GetProducts();
                     break;
                 case "Suppliers":
                     break;
@@ -47,8 +48,8 @@ namespace TravelExpertGUI
                     break;
             }
             addModifyAndDeleteButtonsToDGV();
-            
-            foreach(DataGridViewColumn col in _mainDataGridView.Columns)
+
+            foreach (DataGridViewColumn col in _mainDataGridView.Columns)
             {
                 col.HeaderText = splitByCapitalLetter(col.HeaderText);
             }
@@ -110,8 +111,8 @@ namespace TravelExpertGUI
                     lblProduct.Text = "Product:";
                     lblProduct.Location = new Point(5, 5);
                     frmAddModifyItem.Controls.Add(lblProduct);
-                    
-                    List<Product> products = new List<Product>(); 
+
+                    List<Product> products = new List<Product>();
                     products = ProductDB.GetProducts();
                     ComboBox cboProduct = new ComboBox();
                     cboProduct.DataSource = products;
@@ -195,6 +196,16 @@ namespace TravelExpertGUI
         private void btnProductsSuppliers_Click(object sender, EventArgs e)
         {
             updateTableContext("ProductsSuppliers");
+        }
+
+        private void btnExit_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
+        }
+
+        private void btnProducts_Click(object sender, EventArgs e)
+        {
+            updateTableContext("Products");
         }
     }
 }
