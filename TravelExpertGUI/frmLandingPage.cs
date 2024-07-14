@@ -1,6 +1,7 @@
 using System.Security.Cryptography;
 using System.Text;
 using TravelExpertData;
+using System.Linq;
 
 namespace TravelExpertGUI
 {
@@ -38,6 +39,11 @@ namespace TravelExpertGUI
                     break;
                 case "Products":
                     _mainDataGridView.DataSource = ProductDB.GetProducts();
+                    var productSuppliersColumn = _mainDataGridView.Columns.OfType<DataGridViewColumn>().Where(column => column.Name == "ProductsSuppliers").First();
+                    if(productSuppliersColumn != null)
+                    {
+                        _mainDataGridView.Columns.Remove(productSuppliersColumn);
+                    }
                     break;
                 case "Suppliers":
                     break;
