@@ -15,8 +15,7 @@ namespace TravelExpertGUI
     public partial class AddModifyProduct : Form
     {
         public Product? Product { get; private set; }
-        private bool isAdd { get { return Product != null; } }
-        public AddModifyProduct(Product? product)
+        public AddModifyProduct(Product? product = null)
         {
             InitializeComponent();
             Product = product;
@@ -24,7 +23,7 @@ namespace TravelExpertGUI
 
         private void AddModifyProduct_Load(object sender, EventArgs e)
         {
-            if (isAdd)
+            if (Product == null)
             {
                 lblID.Visible = false;
                 txtID.Visible = false;
@@ -34,6 +33,8 @@ namespace TravelExpertGUI
             else
             {
                 btnOK.Text = "Update";
+                txtID.Text = Product.ProductId.ToString();
+                txtProdName.Text = Product.ProdName;
             }
         }
 

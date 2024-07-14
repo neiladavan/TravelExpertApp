@@ -116,6 +116,13 @@ namespace TravelExpertGUI
                         ProductsSupplierDB.AddProductSupplier(productsSupplier);
                     }
                     break;
+                case "Products":
+                    var addModifyProductForm = new AddModifyProduct();
+                    if (addModifyProductForm.ShowDialog() == DialogResult.OK)
+                    {
+                        updateTableContext("Products");
+                    }
+                    break;
                 default:
                     break;
             
@@ -123,44 +130,49 @@ namespace TravelExpertGUI
             updateTableContext(selectedTable);
         }
 
-        private void DeleteItem()
+        private void DeleteItem(DataGridViewCellEventArgs e)
         {
             System.Diagnostics.Debug.WriteLine("Delete Button is clicked");
         }
 
-        private void ModifyItem()
+        private void ModifyItem(DataGridViewCellEventArgs e)
         {
-            System.Diagnostics.Debug.WriteLine("Modify Button is clicked");
+            DialogResult? result = null;
+
+            switch (selectedTable)
+            {
+                case "Products":
+                    var productList = (List<Product>)_mainDataGridView.DataSource;
+                    var selectedItem = productList[e.RowIndex];
+                    var addModifyProductForm = new AddModifyProduct(selectedItem);
+                    result = addModifyProductForm.ShowDialog();
+                    break;
+            }
+
+            if (result == DialogResult.OK)
+            {
+                updateTableContext(selectedTable);
+            }
         }
 
         // method to add functionality to modify and delete buttons populated in data grid view
         private void _mainDataGridView_CellClick(object sender, DataGridViewCellEventArgs e)
         {
+            if(e.RowIndex < 0)
+            {
+                return;
+            }
+
             int column_count = _mainDataGridView.Columns.Count;
             // index values for Modify and Delete button columns
             int ModifyIndex = column_count - 2;
             int DeleteIndex = column_count - 1;
-
-            if (e.RowIndex > -1)  // make sure header row wasn't clicked
+            if (e.ColumnIndex == ModifyIndex)
             {
-                if (e.ColumnIndex == ModifyIndex || e.ColumnIndex == DeleteIndex)
-                {
-                    DataGridViewCell cell = _mainDataGridView.Rows[e.RowIndex].Cells[0];
-                    string itemID = cell.Value?.ToString()?.Trim() ?? "";
-                    selectedItem = "";
-                }
-
-                if (selectedItem != null)
-                {
-                    if (e.ColumnIndex == ModifyIndex)
-                    {
-                        ModifyItem();
-                    }
-                    else if (e.ColumnIndex == DeleteIndex)
-                    {
-                        DeleteItem();
-                    }
-                }
+                ModifyItem(e);
+            }
+            else if (e.ColumnIndex == DeleteIndex) {
+                DeleteItem(e);
             }
         }
 
