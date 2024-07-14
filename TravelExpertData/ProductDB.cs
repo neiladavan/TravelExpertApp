@@ -1,7 +1,8 @@
-﻿namespace TravelExpertData
+﻿
+namespace TravelExpertData
 {
     public static class ProductDB
-    {
+    { 
         public static List<Product> GetProducts()
         {
             using (TravelExpertsContext db = new TravelExpertsContext())
