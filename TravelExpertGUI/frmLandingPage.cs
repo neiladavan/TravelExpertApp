@@ -92,13 +92,13 @@ namespace TravelExpertGUI
             _mainDataGridView.Columns.Add(modifyColumn);
 
             // add column for delete button
-            DataGridViewButtonColumn deleteColumn = new()
-            {
-                UseColumnTextForButtonValue = true,
-                HeaderText = "",
-                Text = "Delete"
-            };
-            _mainDataGridView.Columns.Add(deleteColumn);
+            //DataGridViewButtonColumn deleteColumn = new()
+            //{
+            //    UseColumnTextForButtonValue = true,
+            //    HeaderText = "",
+            //    Text = "Delete"
+            //};
+            //_mainDataGridView.Columns.Add(deleteColumn);
         }
 
         private void btnAdd_Click(object sender, EventArgs e)
@@ -144,10 +144,10 @@ namespace TravelExpertGUI
             updateTableContext(selectedTable);
         }
 
-        private void DeleteItem(object sender, DataGridViewCellEventArgs e, string selectedTable)
-        {
-            System.Diagnostics.Debug.WriteLine("Delete Button is clicked");
-        }
+        //private void DeleteItem(object sender, DataGridViewCellEventArgs e, string selectedTable)
+        //{
+        //    System.Diagnostics.Debug.WriteLine("Delete Button is clicked");
+        //}
 
         private void ModifyItem(object sender, DataGridViewCellEventArgs e, string selectedTable)
         {
@@ -213,10 +213,10 @@ namespace TravelExpertGUI
             int column_count = _mainDataGridView.Columns.Count;
             // index values for Modify and Delete button columns
             int ModifyIndex = column_count - 2;
-            int DeleteIndex = column_count - 1;
+            //int DeleteIndex = column_count - 1;
             
             if (e.ColumnIndex == ModifyIndex) ModifyItem(sender, e, selectedTable);
-            else if (e.ColumnIndex == DeleteIndex) DeleteItem(sender, e, selectedTable);
+            //else if (e.ColumnIndex == DeleteIndex) DeleteItem(sender, e, selectedTable);
         }
 
         private void btnPackages_Click(object sender, EventArgs e)
