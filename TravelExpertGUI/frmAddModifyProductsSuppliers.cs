@@ -34,6 +34,9 @@ namespace TravelExpertGUI
             else
             {
                 Text = "Modify Products Supplier";
+                cboProduct.SelectedValue = ProductsSupplier.ProductId;
+                cboSupplier.SelectedValue = ProductsSupplier.SupplierId;
+
             }
         }
 

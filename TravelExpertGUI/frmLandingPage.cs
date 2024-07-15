@@ -196,6 +196,21 @@ namespace TravelExpertGUI
                         selectedItem = selectedPackageDTO;
 
                         break;
+                    case "ProductsSuppliers":
+                        var productsSuppliersList = (List<ProductsSupplierDTO>)_mainDataGridView.DataSource;
+                        ProductsSupplierDTO selectedProductsSupplierDTO = productsSuppliersList![e.RowIndex];
+                        ProductsSupplier selectedProductsSupplier = ProductsSupplierDB.GetProductsSupplierFromDTO(selectedProductsSupplierDTO)!;
+                        var modifyProductsSuppliersForm = new frmAddModifyProductsSuppliers() { ProductsSupplier = selectedProductsSupplier };
+                        result = modifyProductsSuppliersForm.ShowDialog();
+                        if (result == DialogResult.OK)
+                        {
+                            ProductsSupplier productsSupplier = modifyProductsSuppliersForm.ProductsSupplier;
+                            ProductsSupplierDB.ModifyProductSupplier(productsSupplier);
+                        }
+                        selectedItem = selectedProductsSupplier;
+                        break;
+                    default:
+                        break;
                 }
 
                 if (result == DialogResult.OK)
