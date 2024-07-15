@@ -167,6 +167,7 @@ namespace TravelExpertGUI
             btnConfirm.TabIndex = 14;
             btnConfirm.Text = "&Confirm";
             btnConfirm.UseVisualStyleBackColor = true;
+            btnConfirm.Click += btnConfirm_Click;
             // 
             // btnExit
             // 
@@ -177,7 +178,7 @@ namespace TravelExpertGUI
             btnExit.Text = "E&xit";
             btnExit.UseVisualStyleBackColor = true;
             // 
-            // frmAddModifyPackages
+            // frmAddModifyPackage
             // 
             AcceptButton = btnConfirm;
             AutoScaleDimensions = new SizeF(8F, 20F);
@@ -200,9 +201,9 @@ namespace TravelExpertGUI
             Controls.Add(label3);
             Controls.Add(label2);
             Controls.Add(label1);
-            Name = "frmAddModifyPackages";
+            Name = "frmAddModifyPackage";
             StartPosition = FormStartPosition.CenterScreen;
-            Load += this.frmAddModifyPackages_Load;
+            Load += frmAddModifyPackages_Load;
             ResumeLayout(false);
             PerformLayout();
         }
