@@ -174,15 +174,26 @@ namespace TravelExpertGUI
                         var packageList = (List<PackageDTO>)_mainDataGridView.DataSource;
 
                         // Get the selected package from the list
-                        PackageDTO selectedPackage = packageList![e.RowIndex];
+                        var selectedPackageDTO = packageList![e.RowIndex];
 
                         // Open a form to modify the selected package
-                        frmAddModifyPackage addModifyForm = new frmAddModifyPackage() { Package = selectedPackage };
+                        frmAddModifyPackage addModifyForm = new frmAddModifyPackage();
+
+                        addModifyForm.Package = new Package
+                        {
+                            PackageId = selectedPackageDTO.PackageId,
+                            PkgName = selectedPackageDTO.PkgName,
+                            PkgStartDate = selectedPackageDTO.PkgStartDate,
+                            PkgEndDate = selectedPackageDTO.PkgEndDate,
+                            PkgDesc = selectedPackageDTO.PkgDesc,
+                            PkgBasePrice = selectedPackageDTO.PkgBasePrice,
+                            PkgAgencyCommission = selectedPackageDTO.PkgAgencyCommission
+                        };
 
                         result = addModifyForm.ShowDialog();
 
                         // Assign the selected item for potential further processing
-                        selectedItem = selectedPackage;
+                        selectedItem = selectedPackageDTO;
 
                         break;
                 }
