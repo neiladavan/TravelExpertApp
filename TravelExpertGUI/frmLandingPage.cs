@@ -212,7 +212,7 @@ namespace TravelExpertGUI
 
             int column_count = _mainDataGridView.Columns.Count;
             // index values for Modify and Delete button columns
-            int ModifyIndex = column_count - 2;
+            int ModifyIndex = column_count - 1;
             //int DeleteIndex = column_count - 1;
             
             if (e.ColumnIndex == ModifyIndex) ModifyItem(sender, e, selectedTable);
