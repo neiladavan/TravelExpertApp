@@ -43,10 +43,11 @@ namespace TravelExpertGUI
             txtPackageId.Text = Package?.PackageId.ToString();
             txtPackageName.Text = Package?.PkgName;
             txtPackageStartDate.Text = Package?.PkgStartDate.HasValue ?? false
-                                                ? Package.PkgStartDate.Value.ToString("MM/dd/yyyy")
+                                                ? Package.PkgStartDate.Value.ToString("MM/dd/yyyy", CultureInfo.InvariantCulture)
                                                 : null;
+
             txtPackageEndDate.Text = Package?.PkgEndDate.HasValue ?? false
-                                                ? Package.PkgEndDate.Value.ToString("MM/dd/yyyy")
+                                                ? Package.PkgEndDate.Value.ToString("MM/dd/yyyy", CultureInfo.InvariantCulture)
                                                 : null;
             txtPackageDesc.Text = Package?.PkgDesc;
             txtPackageBasePrice.Text = Package?.PkgBasePrice.ToString("c");
