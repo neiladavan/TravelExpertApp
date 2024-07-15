@@ -16,7 +16,12 @@ namespace TravelExpertData
                     p => new PackageDTO
                     { 
                         PackageId = p.PackageId,
-                        PkgName = p.PkgName
+                        PkgName = p.PkgName,
+                        PkgStartDate = p.PkgStartDate,
+                        PkgEndDate = p.PkgEndDate,
+                        PkgDesc = p.PkgDesc!,
+                        PkgBasePrice = p.PkgBasePrice,
+                        PkgAgencyCommission = p.PkgAgencyCommission ?? 0m
                     }).ToList();
 
                 return packages;

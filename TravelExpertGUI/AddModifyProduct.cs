@@ -14,11 +14,10 @@ namespace TravelExpertGUI
 {
     public partial class AddModifyProduct : Form
     {
-        public Product? Product { get; private set; }
-        public AddModifyProduct(Product? product = null)
+        public Product? Product;
+        public AddModifyProduct()
         {
             InitializeComponent();
-            Product = product;
         }
 
         private void AddModifyProduct_Load(object sender, EventArgs e)

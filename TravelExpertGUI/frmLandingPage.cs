@@ -36,6 +36,8 @@ namespace TravelExpertGUI
             {
                 case "Packages":
                     _mainDataGridView.DataSource = PackageDB.GetPackages();
+                    _mainDataGridView.Columns[5].DefaultCellStyle.Format = "c";
+                    _mainDataGridView.Columns[6].DefaultCellStyle.Format = "c";
                     break;
                 case "Products":
                     _mainDataGridView.DataSource = ProductDB.GetProducts();
@@ -105,15 +107,27 @@ namespace TravelExpertGUI
             {
                 case "Packages":
                     System.Diagnostics.Debug.WriteLine("Packages table is selected");
+                    using (frmAddModifyPackage frmAddModifyPackages = new frmAddModifyPackage())
+                    {
+                        DialogResult result = frmAddModifyPackages.ShowDialog();
+                        if (result == DialogResult.OK)
+                        {
+                            // Handle OK result for Packages
+                            // Add necessary code here
+                        }
+                    }
+
                     break;
                 case "ProductsSuppliers":
                     System.Diagnostics.Debug.WriteLine("Products supplier table is selected");
-                    frmAddModifyProductsSuppliers frmAddProductsSuppliers = new frmAddModifyProductsSuppliers();
-                    DialogResult result = frmAddProductsSuppliers.ShowDialog();
-                    if(result == DialogResult.OK)
+                    using (frmAddModifyProductsSuppliers frmAddModifyProductsSuppliers = new frmAddModifyProductsSuppliers())
                     {
-                        ProductsSupplier productsSupplier = frmAddProductsSuppliers.ProductsSupplier;
-                        ProductsSupplierDB.AddProductSupplier(productsSupplier);
+                        DialogResult result = frmAddModifyProductsSuppliers.ShowDialog();
+                        if (result == DialogResult.OK)
+                        {
+                            ProductsSupplier productsSupplier = frmAddModifyProductsSuppliers.ProductsSupplier;
+                            ProductsSupplierDB.AddProductSupplier(productsSupplier);
+                        }
                     }
                     break;
                 case "Products":
@@ -130,50 +144,68 @@ namespace TravelExpertGUI
             updateTableContext(selectedTable);
         }
 
-        private void DeleteItem(DataGridViewCellEventArgs e)
+        private void DeleteItem(object sender, DataGridViewCellEventArgs e, string selectedTable)
         {
             System.Diagnostics.Debug.WriteLine("Delete Button is clicked");
         }
 
-        private void ModifyItem(DataGridViewCellEventArgs e)
+        private void ModifyItem(object sender, DataGridViewCellEventArgs e, string selectedTable)
         {
             DialogResult? result = null;
 
-            switch (selectedTable)
-            {
-                case "Products":
-                    var productList = (List<Product>)_mainDataGridView.DataSource;
-                    var selectedItem = productList[e.RowIndex];
-                    var addModifyProductForm = new AddModifyProduct(selectedItem);
-                    result = addModifyProductForm.ShowDialog();
-                    break;
-            }
+            // Access the DataGridView
+            DataGridView? dataGridView = sender as DataGridView;
 
-            if (result == DialogResult.OK)
+            if (dataGridView != null && e.RowIndex >= 0 && e.ColumnIndex >= 0)
             {
-                updateTableContext(selectedTable);
-            }
+                switch (selectedTable)
+                {
+                    case "Products":
+                        var productList = (List<Product>)_mainDataGridView.DataSource;
+                        Product selectedProduct = productList[e.RowIndex];
+                        var addModifyProductForm = new AddModifyProduct() { Product = selectedProduct};
+                        result = addModifyProductForm.ShowDialog();
+
+                        selectedItem = selectedProduct;
+
+                        break;
+                    case "Packages":
+                        // Access the DataSource
+                        var packageList = (List<PackageDTO>)_mainDataGridView.DataSource;
+
+                        // Get the selected package from the list
+                        PackageDTO selectedPackage = packageList![e.RowIndex];
+
+                        // Open a form to modify the selected package
+                        frmAddModifyPackage addModifyForm = new frmAddModifyPackage() { Package = selectedPackage };
+
+                        result = addModifyForm.ShowDialog();
+
+                        // Assign the selected item for potential further processing
+                        selectedItem = selectedPackage;
+
+                        break;
+                }
+
+                if (result == DialogResult.OK)
+                {
+                    updateTableContext(selectedTable);
+                }
+            }            
         }
 
         // method to add functionality to modify and delete buttons populated in data grid view
         private void _mainDataGridView_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-            if(e.RowIndex < 0)
-            {
-                return;
-            }
+            if(e.RowIndex < 0) return;
 
             int column_count = _mainDataGridView.Columns.Count;
             // index values for Modify and Delete button columns
             int ModifyIndex = column_count - 2;
             int DeleteIndex = column_count - 1;
-            if (e.ColumnIndex == ModifyIndex)
-            {
-                ModifyItem(e);
-            }
-            else if (e.ColumnIndex == DeleteIndex) {
-                DeleteItem(e);
-            }
+            
+            if (e.ColumnIndex == ModifyIndex) ModifyItem(sender, e, selectedTable);
+            else if (e.ColumnIndex == DeleteIndex) DeleteItem(sender, e, selectedTable);
         }
 
         private void btnPackages_Click(object sender, EventArgs e)

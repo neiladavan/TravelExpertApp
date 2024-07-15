@@ -12,6 +12,15 @@ namespace TravelExpertData
 
         public string PkgName { get; set; } = null!;
 
+        public DateTime? PkgStartDate { get; set; }
+
+        public DateTime? PkgEndDate { get; set; }
+
+        public string PkgDesc { get; set; } = null!;
+
+        public decimal PkgBasePrice { get; set; } = 0;
+
+        public decimal PkgAgencyCommission { get; set; } = 0m;
 
     }
 }
