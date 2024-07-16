@@ -28,13 +28,30 @@ namespace TravelExpertData
             }
         }
 
+        /// <summary>
+        /// Get specific package based from the package id provided
+        /// </summary>
+        /// <param name="productCode">package id of the package to be retrieve</param>
+        /// <returns>package rcord</returns>
+        public static Package? GetPackage(int packageId)
+        {
+            Package? package = null;
+
+            using (TravelExpertsContext db = new TravelExpertsContext())
+            {
+                package = db.Packages.Find(packageId); // returns package by package id or null when not found
+            }
+
+            return package;
+        }
+
         public static void ModifyPackages(int packageId, Package newPackageData)
         {
             using (TravelExpertsContext db = new TravelExpertsContext())
             {
                 Package? pck = db.Packages.Find(packageId);
 
-                // modify existing customer object in the app
+                // modify existing packages object in the app
                 if (pck != null)
                 {
                     pck.PkgName = newPackageData.PkgName;
@@ -45,6 +62,18 @@ namespace TravelExpertData
                     pck.PkgAgencyCommission = newPackageData.PkgAgencyCommission;
 
                     db.SaveChanges(); // saves changes to the database
+                }
+            }
+        }
+
+        public static void AddPackages(Package package)
+        {
+            using (TravelExpertsContext db = new TravelExpertsContext())
+            {
+                if (package != null)
+                {
+                    db.Packages.Add(package); // adds to the collection packages in the app
+                    db.SaveChanges(); // saves to the database
                 }
             }
         }

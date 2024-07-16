@@ -112,8 +112,8 @@ namespace TravelExpertGUI
                         DialogResult result = frmAddModifyPackages.ShowDialog();
                         if (result == DialogResult.OK)
                         {
-                            // Handle OK result for Packages
-                            // Add necessary code here
+                            Package package = frmAddModifyPackages.Package!;
+                            PackageDB.AddPackages(package);
                         }
                     }
 
@@ -177,9 +177,12 @@ namespace TravelExpertGUI
                         var selectedPackageDTO = packageList![e.RowIndex];
 
                         // Open a form to modify the selected package
-                        frmAddModifyPackage addModifyForm = new frmAddModifyPackage();
+                        //frmAddModifyPackage addModifyForm = new frmAddModifyPackage();
+                        Package selectedPackage = (PackageDB.GetPackage(selectedPackageDTO.PackageId))!;
 
-                        addModifyForm.Package = new Package
+                        frmAddModifyPackage addModifyForm = new frmAddModifyPackage() { Package = selectedPackage };
+
+                        /*addModifyForm.Package = new Package
                         {
                             PackageId = selectedPackageDTO.PackageId,
                             PkgName = selectedPackageDTO.PkgName,
@@ -188,12 +191,14 @@ namespace TravelExpertGUI
                             PkgDesc = selectedPackageDTO.PkgDesc,
                             PkgBasePrice = selectedPackageDTO.PkgBasePrice,
                             PkgAgencyCommission = selectedPackageDTO.PkgAgencyCommission
-                        };
+                        };*/
 
                         result = addModifyForm.ShowDialog();
 
                         // Assign the selected item for potential further processing
                         selectedItem = selectedPackageDTO;
+
+                        PackageDB.ModifyPackages(Convert.ToInt32(selectedPackageDTO.PackageId), selectedPackage);
 
                         break;
                 }

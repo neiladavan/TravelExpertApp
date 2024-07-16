@@ -123,6 +123,7 @@ namespace TravelExpertGUI
             txtPackageName.Name = "txtPackageName";
             txtPackageName.Size = new Size(351, 27);
             txtPackageName.TabIndex = 8;
+            txtPackageName.Tag = "Package Name";
             // 
             // txtPackageStartDate
             // 
@@ -130,6 +131,7 @@ namespace TravelExpertGUI
             txtPackageStartDate.Name = "txtPackageStartDate";
             txtPackageStartDate.Size = new Size(162, 27);
             txtPackageStartDate.TabIndex = 9;
+            txtPackageStartDate.Tag = "Package Start Date";
             // 
             // txtPackageEndDate
             // 
@@ -137,6 +139,7 @@ namespace TravelExpertGUI
             txtPackageEndDate.Name = "txtPackageEndDate";
             txtPackageEndDate.Size = new Size(162, 27);
             txtPackageEndDate.TabIndex = 10;
+            txtPackageEndDate.Tag = "Package End Date";
             // 
             // txtPackageDesc
             // 
@@ -144,6 +147,7 @@ namespace TravelExpertGUI
             txtPackageDesc.Name = "txtPackageDesc";
             txtPackageDesc.Size = new Size(351, 27);
             txtPackageDesc.TabIndex = 11;
+            txtPackageDesc.Tag = "Package Description";
             // 
             // txtPackageBasePrice
             // 
@@ -151,6 +155,7 @@ namespace TravelExpertGUI
             txtPackageBasePrice.Name = "txtPackageBasePrice";
             txtPackageBasePrice.Size = new Size(112, 27);
             txtPackageBasePrice.TabIndex = 12;
+            txtPackageBasePrice.Tag = "Package Base Price";
             // 
             // txtPackageAgencyCommission
             // 
@@ -158,6 +163,7 @@ namespace TravelExpertGUI
             txtPackageAgencyCommission.Name = "txtPackageAgencyCommission";
             txtPackageAgencyCommission.Size = new Size(112, 27);
             txtPackageAgencyCommission.TabIndex = 13;
+            txtPackageAgencyCommission.Tag = "Package Agency Commission";
             // 
             // btnConfirm
             // 

@@ -27,7 +27,7 @@ namespace TravelExpertGUI
             if (Package == null)
             {
                 Text = "Add Package";
-                txtPackageId.ReadOnly = false;
+                txtPackageId.ReadOnly = true;
             }
             else
             {
@@ -50,26 +50,54 @@ namespace TravelExpertGUI
                                                 ? Package.PkgEndDate.Value.ToString("MM/dd/yyyy", CultureInfo.InvariantCulture)
                                                 : null;
             txtPackageDesc.Text = Package?.PkgDesc;
-            txtPackageBasePrice.Text = Package?.PkgBasePrice.ToString("c");
+            txtPackageBasePrice.Text = Package?.PkgBasePrice.ToString("f2");
             txtPackageAgencyCommission.Text = Package?.PkgAgencyCommission.HasValue ?? false
-                                                ? Package.PkgAgencyCommission.Value.ToString("c")
+                                                ? Package.PkgAgencyCommission.Value.ToString("f2")
                                                 : string.Empty;
         }
 
         private void btnConfirm_Click(object sender, EventArgs e)
         {
-            if (true) 
+            if (IsValidData()) 
             {
-                //TO DO Validation
+                if (Convert.ToDecimal(txtPackageAgencyCommission.Text) > Convert.ToDecimal(txtPackageBasePrice.Text))
+                {
+                    MessageBox.Show(txtPackageAgencyCommission.Tag + " should not greater than " + txtPackageBasePrice.Tag);
+                    txtPackageAgencyCommission.SelectAll();
+                    txtPackageAgencyCommission.Focus();
+                }
+                else
+                {
+                    Package ??= new Package(); // if Package is null, create new object
 
-                Package ??= new Package(); // if Package is null, create new object
+                    PopulatePackageDate();
+
+                    DialogResult = DialogResult.OK;
+                }
                 
-                PopulatePackageDate();
-
-                PackageDB.ModifyPackages(Convert.ToInt32(txtPackageId.Text), Package);
-
-                DialogResult = DialogResult.OK;
             }
+        }
+
+        private bool IsValidData()
+        {
+            bool success = false;
+
+            if (Validator.IsPresent(txtPackageName) &&
+                Validator.IsPresent(txtPackageStartDate) &&
+                Validator.IsValidDateTime(txtPackageStartDate) &&
+                Validator.IsPresent(txtPackageEndDate) &&
+                Validator.IsValidDateTime(txtPackageEndDate) &&
+                Validator.IsValidEndDate(txtPackageStartDate, txtPackageEndDate) &&
+                Validator.IsPresent(txtPackageDesc) &&
+                Validator.IsPresent(txtPackageBasePrice) &&
+                Validator.IsNonNegativeDecimal(txtPackageBasePrice) &&
+                Validator.IsPresent(txtPackageAgencyCommission) && 
+                Validator.IsNonNegativeDecimal(txtPackageAgencyCommission))
+            {
+                success = true;
+            }
+
+            return success;
         }
 
         private void PopulatePackageDate()
