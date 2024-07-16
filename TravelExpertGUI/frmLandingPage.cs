@@ -173,32 +173,23 @@ namespace TravelExpertGUI
                         // Access the DataSource
                         var packageList = (List<PackageDTO>)_mainDataGridView.DataSource;
 
-                        // Get the selected package from the list
-                        var selectedPackageDTO = packageList![e.RowIndex];
+                        PackageDTO selectedPackageDTO = packageList![e.RowIndex];
+                        Package selectedPackage = PackageDB.GetPackageFromDTO(selectedPackageDTO)!;
+                        
+                        // create object for package
+                        var addModifyForm = new frmAddModifyPackage() { Package = selectedPackage };
 
                         // Open a form to modify the selected package
-                        //frmAddModifyPackage addModifyForm = new frmAddModifyPackage();
-                        Package selectedPackage = (PackageDB.GetPackage(selectedPackageDTO.PackageId))!;
-
-                        frmAddModifyPackage addModifyForm = new frmAddModifyPackage() { Package = selectedPackage };
-
-                        /*addModifyForm.Package = new Package
-                        {
-                            PackageId = selectedPackageDTO.PackageId,
-                            PkgName = selectedPackageDTO.PkgName,
-                            PkgStartDate = selectedPackageDTO.PkgStartDate,
-                            PkgEndDate = selectedPackageDTO.PkgEndDate,
-                            PkgDesc = selectedPackageDTO.PkgDesc,
-                            PkgBasePrice = selectedPackageDTO.PkgBasePrice,
-                            PkgAgencyCommission = selectedPackageDTO.PkgAgencyCommission
-                        };*/
-
                         result = addModifyForm.ShowDialog();
 
+                        if (result == DialogResult.OK)
+                        {
+                            Package package = addModifyForm.Package;
+                            PackageDB.ModifyPackages(package);
+                        }
+                            
                         // Assign the selected item for potential further processing
-                        selectedItem = selectedPackageDTO;
-
-                        PackageDB.ModifyPackages(Convert.ToInt32(selectedPackageDTO.PackageId), selectedPackage);
+                        selectedItem = selectedPackageDTO;                       
 
                         break;
                     case "ProductsSuppliers":
