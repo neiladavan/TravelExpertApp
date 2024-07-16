@@ -1,5 +1,7 @@
 ﻿
 
+using Microsoft.EntityFrameworkCore.Metadata.Conventions;
+
 namespace TravelExpertData
 {
     public static class ProductsSupplierDB
@@ -13,6 +15,14 @@ namespace TravelExpertData
             }
         }
 
+        public static void ModifyProductSupplier(ProductsSupplier productsSupplier)
+        {
+            using (TravelExpertsContext db = new TravelExpertsContext())
+            {
+                db.ProductsSuppliers.Update(productsSupplier);
+                db.SaveChanges();   
+            }
+        } 
         public static List<ProductsSupplierDTO> GetProductsSuppliersAsNames()
         {
             using (TravelExpertsContext db = new TravelExpertsContext())
@@ -25,6 +35,28 @@ namespace TravelExpertData
                     }).ToList();
                 return productsSuppliers;
             }
+        }
+
+        public static ProductsSupplier? GetProductsSupplierFromDTO(ProductsSupplierDTO productSupplierDTO)
+        {
+            ProductsSupplier? productsSupplier = null;
+            
+            using (TravelExpertsContext db = new TravelExpertsContext())
+            {
+                var productId = db.Products
+                    .Where(p => p.ProdName == productSupplierDTO.ProductName)
+                    .Select(p => p.ProductId)
+                    .FirstOrDefault();
+                var supplierId = db.Suppliers
+                    .Where(s => s.SupName == productSupplierDTO.SupplierName)
+                    .Select(s => s.SupplierId)
+                    .FirstOrDefault();
+                productsSupplier = db.ProductsSuppliers
+                    .Where(ps => ps.ProductId == productId && ps.SupplierId == supplierId)
+                    .FirstOrDefault();
+                
+            }
+            return productsSupplier;
         }
 
     }
