@@ -29,40 +29,32 @@ namespace TravelExpertData
         }
 
         /// <summary>
-        /// Get specific package based from the package id provided
+        /// Get specific package based from the packageDTO data
         /// </summary>
-        /// <param name="productCode">package id of the package to be retrieve</param>
-        /// <returns>package rcord</returns>
-        public static Package? GetPackage(int packageId)
+        /// <param name="packageDTO">package to be retrieve</param>
+        /// <returns>package record</returns>
+        public static Package? GetPackageFromDTO(PackageDTO packageDTO)
         {
             Package? package = null;
 
             using (TravelExpertsContext db = new TravelExpertsContext())
             {
-                package = db.Packages.Find(packageId); // returns package by package id or null when not found
+                package = db.Packages.Find(packageDTO.PackageId); // returns package the package or null when not found
             }
 
             return package;
         }
 
-        public static void ModifyPackages(int packageId, Package newPackageData)
+        /// <summary>
+        /// Modifies selected package
+        /// </summary>
+        /// <param name="newPackageData">new package data to be saved</param>
+        public static void ModifyPackages(Package newPackageData)
         {
             using (TravelExpertsContext db = new TravelExpertsContext())
             {
-                Package? pck = db.Packages.Find(packageId);
-
-                // modify existing packages object in the app
-                if (pck != null)
-                {
-                    pck.PkgName = newPackageData.PkgName;
-                    pck.PkgStartDate = newPackageData.PkgStartDate;
-                    pck.PkgEndDate = newPackageData.PkgEndDate;
-                    pck.PkgDesc = newPackageData.PkgDesc;
-                    pck.PkgBasePrice = newPackageData.PkgBasePrice;
-                    pck.PkgAgencyCommission = newPackageData.PkgAgencyCommission;
-
-                    db.SaveChanges(); // saves changes to the database
-                }
+                db.Packages.Update(newPackageData);
+                db.SaveChanges();
             }
         }
 
