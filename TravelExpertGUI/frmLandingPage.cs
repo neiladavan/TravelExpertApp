@@ -51,6 +51,11 @@ namespace TravelExpertGUI
                     break;
                 case "ProductsSuppliers":
                     _mainDataGridView.DataSource = ProductsSupplierDB.GetProductsSuppliersAsNames();
+                    var productSupplierIdColumn = _mainDataGridView.Columns.OfType<DataGridViewColumn>().Where(column => column.Name == "ProductSupplierId").First();
+                    if (productSupplierIdColumn != null)
+                    {
+                        _mainDataGridView.Columns.Remove(productSupplierIdColumn);
+                    }
                     break;
                 default:
                     break;

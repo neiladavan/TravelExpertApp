@@ -30,6 +30,7 @@ namespace TravelExpertData
                 List<ProductsSupplierDTO> productsSuppliers = db.ProductsSuppliers.Select(
                     p => new ProductsSupplierDTO
                     {
+                        ProductSupplierId = p.ProductSupplierId,
                         ProductName = p.Product.ProdName,
                         SupplierName = p.Supplier.SupName 
                     }).ToList();
@@ -43,16 +44,8 @@ namespace TravelExpertData
             
             using (TravelExpertsContext db = new TravelExpertsContext())
             {
-                var productId = db.Products
-                    .Where(p => p.ProdName == productSupplierDTO.ProductName)
-                    .Select(p => p.ProductId)
-                    .FirstOrDefault();
-                var supplierId = db.Suppliers
-                    .Where(s => s.SupName == productSupplierDTO.SupplierName)
-                    .Select(s => s.SupplierId)
-                    .FirstOrDefault();
                 productsSupplier = db.ProductsSuppliers
-                    .Where(ps => ps.ProductId == productId && ps.SupplierId == supplierId)
+                    .Where(ps => ps.ProductSupplierId == productSupplierDTO.ProductSupplierId)
                     .FirstOrDefault();
                 
             }
