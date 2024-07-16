@@ -2,6 +2,7 @@ using System.Security.Cryptography;
 using System.Text;
 using TravelExpertData;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
 
 namespace TravelExpertGUI
 {
@@ -42,7 +43,7 @@ namespace TravelExpertGUI
                 case "Products":
                     _mainDataGridView.DataSource = ProductDB.GetProducts();
                     var productSuppliersColumn = _mainDataGridView.Columns.OfType<DataGridViewColumn>().Where(column => column.Name == "ProductsSuppliers").First();
-                    if(productSuppliersColumn != null)
+                    if (productSuppliersColumn != null)
                     {
                         _mainDataGridView.Columns.Remove(productSuppliersColumn);
                     }
@@ -55,6 +56,21 @@ namespace TravelExpertGUI
                     if (productSupplierIdColumn != null)
                     {
                         _mainDataGridView.Columns.Remove(productSupplierIdColumn);
+                    }
+                    break;
+                case "PackagesProductsSuppliers":
+                    _mainDataGridView.DataSource = PackageDB.GetPackagesProductsSuppliers();
+                    
+                    // Identify columns to be removed
+                    var ppsColumn = _mainDataGridView.Columns
+                        .OfType<DataGridViewColumn>()
+                        .Where(column => column.Name == "PackageId" || column.Name == "ProductSupplierId")
+                        .ToList(); // Materialize the collection to avoid modification issues during iteration
+
+                    // Remove identified columns
+                    foreach (var column in ppsColumn)
+                    {
+                        _mainDataGridView.Columns.Remove(column);
                     }
                     break;
                 default:
@@ -142,9 +158,12 @@ namespace TravelExpertGUI
                         updateTableContext("Products");
                     }
                     break;
+                case "PackagesProductsSuppliers":
+                    System.Diagnostics.Debug.WriteLine("Packages Products supplier table is selected");
+                    break;
                 default:
                     break;
-            
+
             }
             updateTableContext(selectedTable);
         }
@@ -168,7 +187,7 @@ namespace TravelExpertGUI
                     case "Products":
                         var productList = (List<Product>)_mainDataGridView.DataSource;
                         Product selectedProduct = productList[e.RowIndex];
-                        var addModifyProductForm = new AddModifyProduct() { Product = selectedProduct};
+                        var addModifyProductForm = new AddModifyProduct() { Product = selectedProduct };
                         result = addModifyProductForm.ShowDialog();
 
                         selectedItem = selectedProduct;
@@ -180,7 +199,7 @@ namespace TravelExpertGUI
 
                         PackageDTO selectedPackageDTO = packageList![e.RowIndex];
                         Package selectedPackage = PackageDB.GetPackageFromDTO(selectedPackageDTO)!;
-                        
+
                         // create object for package
                         var addModifyForm = new frmAddModifyPackage() { Package = selectedPackage };
 
@@ -192,9 +211,9 @@ namespace TravelExpertGUI
                             Package package = addModifyForm.Package;
                             PackageDB.ModifyPackages(package);
                         }
-                            
+
                         // Assign the selected item for potential further processing
-                        selectedItem = selectedPackageDTO;                       
+                        selectedItem = selectedPackageDTO;
 
                         break;
                     case "ProductsSuppliers":
@@ -210,6 +229,23 @@ namespace TravelExpertGUI
                         }
                         selectedItem = selectedProductsSupplier;
                         break;
+                    case "PackagesProductsSuppliers":
+                        using (TravelExpertsContext db = new TravelExpertsContext())
+                        {
+                            var packageProductSuppliers = db.Packages
+                                .Include(p => p.ProductSuppliers)
+                                    .ThenInclude(ps => ps.Product) // Include Product in ProductSupplier
+                                .Include(p => p.ProductSuppliers)
+                                    .ThenInclude(ps => ps.Supplier) // Include Supplier in ProductSupplier
+                                .SelectMany(p => p.ProductSuppliers.Select(ps => new
+                                {
+                                    p.PackageId,
+                                    p.PkgName,
+                                    ps.ProductSupplierId,
+                                    ProductSupplierName = ps.Product.ProdName + " - " + ps.Supplier.SupName
+                                })).ToList();
+                        }
+                        break;
                     default:
                         break;
                 }
@@ -218,19 +254,19 @@ namespace TravelExpertGUI
                 {
                     updateTableContext(selectedTable);
                 }
-            }            
+            }
         }
 
         // method to add functionality to modify and delete buttons populated in data grid view
         private void _mainDataGridView_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-            if(e.RowIndex < 0) return;
+            if (e.RowIndex < 0) return;
 
             int column_count = _mainDataGridView.Columns.Count;
             // index values for Modify and Delete button columns
             int ModifyIndex = column_count - 1;
             //int DeleteIndex = column_count - 1;
-            
+
             if (e.ColumnIndex == ModifyIndex) ModifyItem(sender, e, selectedTable);
             //else if (e.ColumnIndex == DeleteIndex) DeleteItem(sender, e, selectedTable);
         }
@@ -252,6 +288,11 @@ namespace TravelExpertGUI
         private void btnProducts_Click(object sender, EventArgs e)
         {
             updateTableContext("Products");
+        }
+
+        private void btnPackagesProductsSuppliers_Click(object sender, EventArgs e)
+        {
+            updateTableContext("PackagesProductsSuppliers");
         }
     }
 }

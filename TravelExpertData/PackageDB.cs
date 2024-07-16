@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -67,6 +68,27 @@ namespace TravelExpertData
                     db.Packages.Add(package); // adds to the collection packages in the app
                     db.SaveChanges(); // saves to the database
                 }
+            }
+        }
+
+        public static List<PackageProductSupplierDTO> GetPackagesProductsSuppliers()
+        {
+            using (TravelExpertsContext db = new TravelExpertsContext())
+            {
+                List<PackageProductSupplierDTO> packageProductSuppliers = db.Packages
+                    .Include(p => p.ProductSuppliers)
+                        .ThenInclude(ps => ps.Product) // Include Product in ProductSupplier
+                    .Include(p => p.ProductSuppliers)
+                        .ThenInclude(ps => ps.Supplier) // Include Supplier in ProductSupplier
+                    .SelectMany(p => p.ProductSuppliers.Select(ps => new PackageProductSupplierDTO
+                    {
+                        PackageId = p.PackageId,
+                        PkgName = p.PkgName,
+                        ProductSupplierId = ps.ProductSupplierId,
+                        ProductSupplierName = ps.Product!.ProdName + " - " + ps.Supplier!.SupName
+                    })).ToList();
+
+                return packageProductSuppliers;
             }
         }
     }
