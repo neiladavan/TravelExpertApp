@@ -14,7 +14,7 @@ namespace TravelExpertGUI
 {
     public partial class frmAddModifyPackage : Form
     {
-        // add public property for a Product entity 
+        // add public property for a Package entity 
         public Package? Package;
 
         public frmAddModifyPackage()
