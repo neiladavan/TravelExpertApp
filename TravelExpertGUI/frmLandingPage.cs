@@ -230,21 +230,11 @@ namespace TravelExpertGUI
                         selectedItem = selectedProductsSupplier;
                         break;
                     case "PackagesProductsSuppliers":
-                        using (TravelExpertsContext db = new TravelExpertsContext())
-                        {
-                            var packageProductSuppliers = db.Packages
-                                .Include(p => p.ProductSuppliers)
-                                    .ThenInclude(ps => ps.Product) // Include Product in ProductSupplier
-                                .Include(p => p.ProductSuppliers)
-                                    .ThenInclude(ps => ps.Supplier) // Include Supplier in ProductSupplier
-                                .SelectMany(p => p.ProductSuppliers.Select(ps => new
-                                {
-                                    p.PackageId,
-                                    p.PkgName,
-                                    ps.ProductSupplierId,
-                                    ProductSupplierName = ps.Product.ProdName + " - " + ps.Supplier.SupName
-                                })).ToList();
-                        }
+                        System.Diagnostics.Debug.WriteLine("Modify Packages Products Supplier table!");
+                        var packagesProductsSuppliersList = (List<PackageProductSupplierDTO>)_mainDataGridView.DataSource;
+                        PackageProductSupplierDTO selectedPPSDTO = packagesProductsSuppliersList![e.RowIndex];
+                        
+                        System.Diagnostics.Debug.WriteLine($"{selectedPPSDTO.ProductSupplierId} {selectedPPSDTO.PackageId}");
                         break;
                     default:
                         break;
