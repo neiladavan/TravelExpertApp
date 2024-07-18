@@ -1,6 +1,8 @@
 ﻿
 
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Conventions;
+using Microsoft.Identity.Client;
 
 namespace TravelExpertData
 {
@@ -50,6 +52,18 @@ namespace TravelExpertData
                 
             }
             return productsSupplier;
+        }
+
+        public static List<ProductsSupplier> GetProductsSuppliers()
+        {
+            List<ProductsSupplier> productsSuppliers = new List<ProductsSupplier>();
+            using (TravelExpertsContext db = new TravelExpertsContext())
+            {
+                productsSuppliers = db.ProductsSuppliers
+                    .Include(ps => ps.Product) // Eager load Product
+                    .Include(ps => ps.Supplier).ToList(); // Eager load Supplier
+            }
+            return productsSuppliers;
         }
 
     }
