@@ -36,7 +36,7 @@ namespace TravelExpertGUI
             switch (tableName)
             {
                 case "Packages":
-                    _mainDataGridView.DataSource = PackageDB.GetPackages();
+                    _mainDataGridView.DataSource = PackageDB.GetPackageDTOs();
                     _mainDataGridView.Columns[5].DefaultCellStyle.Format = "c";
                     _mainDataGridView.Columns[6].DefaultCellStyle.Format = "c";
                     break;
@@ -160,6 +160,10 @@ namespace TravelExpertGUI
                     break;
                 case "PackagesProductsSuppliers":
                     System.Diagnostics.Debug.WriteLine("Packages Products supplier table is selected");
+                    using (frmAddModifyPPS frmAddModifyPPS = new frmAddModifyPPS())
+                    {
+                        DialogResult result = frmAddModifyPPS.ShowDialog();
+                    }
                     break;
                 default:
                     break;

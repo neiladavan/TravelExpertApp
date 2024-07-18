@@ -9,7 +9,17 @@ namespace TravelExpertData
 {
     public static class PackageDB
     {
-        public static List<PackageDTO> GetPackages()
+        public static List<Package> GetPackages()
+        { 
+            List<Package> packages = new List<Package>();
+            using (TravelExpertsContext db = new TravelExpertsContext())
+            {
+                packages = db.Packages.ToList();
+            }
+            return packages;
+        }
+
+        public static List<PackageDTO> GetPackageDTOs()
         {
             using (TravelExpertsContext db = new TravelExpertsContext())
             { 
@@ -90,6 +100,36 @@ namespace TravelExpertData
 
                 return packageProductSuppliers;
             }
+        }
+
+        public static List<ProductsSupplier> GetProductSuppliersForOnePackage(Package package)
+        {
+            List<ProductsSupplier> packageProductSuppliers = new List<ProductsSupplier>();
+
+            using (TravelExpertsContext db = new TravelExpertsContext())
+            {
+                packageProductSuppliers = db.Packages
+                    .Where(p => p.PackageId == package.PackageId)
+                    .SelectMany(p => p.ProductSuppliers)
+                    .Include(ps => ps.Product) // Eager load Product
+                    .Include(ps => ps.Supplier).ToList(); // Eager load Supplier
+            }       
+            return packageProductSuppliers;
+        }
+
+        public static List<ProductsSupplier> GetProductSuppliersNotInOnePackage(Package package)
+        {
+            List<ProductsSupplier> packageProductSuppliers = new List<ProductsSupplier>();
+
+            using (TravelExpertsContext db = new TravelExpertsContext())
+            {
+                // get all product suppliers in package
+                List<ProductsSupplier> packageProductSuppliersInPackage = GetProductSuppliersForOnePackage(package);
+                List<ProductsSupplier> allProductsSuppliers = ProductsSupplierDB.GetProductsSuppliers();
+
+                packageProductSuppliers = allProductsSuppliers.Except(packageProductSuppliersInPackage).ToList();
+            }
+            return packageProductSuppliers;
         }
     }
 }
