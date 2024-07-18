@@ -84,6 +84,7 @@
             btnAccept.TabIndex = 4;
             btnAccept.Text = "&Accept";
             btnAccept.UseVisualStyleBackColor = true;
+            btnAccept.Click += btnAccept_Click;
             // 
             // btnCancel
             // 
@@ -154,8 +155,10 @@
             // 
             // frmAddModifyPPS
             // 
+            AcceptButton = btnAccept;
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
+            CancelButton = btnCancel;
             ClientSize = new Size(757, 373);
             Controls.Add(lblAssignedPS);
             Controls.Add(lblAvailablePS);
@@ -170,7 +173,7 @@
             Controls.Add(lstProductSuppliersAssigned);
             Controls.Add(lstProductSuppliersAvailable);
             Name = "frmAddModifyPPS";
-            Text = "Form1";
+            Text = "Assign Product Suppliers";
             Load += frmAddModifyPPS_Load;
             ResumeLayout(false);
             PerformLayout();

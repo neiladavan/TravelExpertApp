@@ -60,7 +60,7 @@ namespace TravelExpertGUI
                     break;
                 case "PackagesProductsSuppliers":
                     _mainDataGridView.DataSource = PackageDB.GetPackagesProductsSuppliers();
-                    
+                    btnAdd.Text = "Assign Product Suppliers";
                     // Identify columns to be removed
                     var ppsColumn = _mainDataGridView.Columns
                         .OfType<DataGridViewColumn>()
@@ -72,11 +72,15 @@ namespace TravelExpertGUI
                     {
                         _mainDataGridView.Columns.Remove(column);
                     }
+                    _mainDataGridView.Columns[0].HeaderText = "Package Name";
                     break;
                 default:
                     break;
             }
-            addModifyAndDeleteButtonsToDGV();
+            if (selectedTable != "PackagesProductsSuppliers") // the modify case doesn't make sense here.
+            {
+                addModifyAndDeleteButtonsToDGV();
+            }
 
             foreach (DataGridViewColumn col in _mainDataGridView.Columns)
             {
@@ -232,13 +236,6 @@ namespace TravelExpertGUI
                             ProductsSupplierDB.ModifyProductSupplier(productsSupplier);
                         }
                         selectedItem = selectedProductsSupplier;
-                        break;
-                    case "PackagesProductsSuppliers":
-                        System.Diagnostics.Debug.WriteLine("Modify Packages Products Supplier table!");
-                        var packagesProductsSuppliersList = (List<PackageProductSupplierDTO>)_mainDataGridView.DataSource;
-                        PackageProductSupplierDTO selectedPPSDTO = packagesProductsSuppliersList![e.RowIndex];
-                        
-                        System.Diagnostics.Debug.WriteLine($"{selectedPPSDTO.ProductSupplierId} {selectedPPSDTO.PackageId}");
                         break;
                     default:
                         break;

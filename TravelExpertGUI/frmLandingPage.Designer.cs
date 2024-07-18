@@ -59,9 +59,9 @@
             // 
             btnPackagesProductsSuppliers.Location = new Point(12, 315);
             btnPackagesProductsSuppliers.Name = "btnPackagesProductsSuppliers";
-            btnPackagesProductsSuppliers.Size = new Size(94, 84);
+            btnPackagesProductsSuppliers.Size = new Size(94, 77);
             btnPackagesProductsSuppliers.TabIndex = 4;
-            btnPackagesProductsSuppliers.Text = "Packages Products Suppliers";
+            btnPackagesProductsSuppliers.Text = "Package Product Suppliers";
             btnPackagesProductsSuppliers.UseVisualStyleBackColor = true;
             btnPackagesProductsSuppliers.Click += btnPackagesProductsSuppliers_Click;
             // 

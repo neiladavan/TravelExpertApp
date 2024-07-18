@@ -108,6 +108,7 @@ namespace TravelExpertData
 
             using (TravelExpertsContext db = new TravelExpertsContext())
             {
+
                 packageProductSuppliers = db.Packages
                     .Where(p => p.PackageId == package.PackageId)
                     .SelectMany(p => p.ProductSuppliers)

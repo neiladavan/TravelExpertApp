@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
@@ -15,8 +16,9 @@ namespace TravelExpertGUI
     public partial class frmAddModifyPPS : Form
     {
         List<Package> packages = new List<Package>();
-        List<ProductsSupplier> productSuppliersAssigned = new List<ProductsSupplier>();
-        List<ProductsSupplier> productsSuppliersAvailable = new List<ProductsSupplier>();
+        List<ProductsSupplier> startProductSuppliersAssigned = new List<ProductsSupplier>();
+        List<ProductsSupplier> startProductsSuppliersAvailable = new List<ProductsSupplier>();
+        Package selectedPackage = null!;
 
         public frmAddModifyPPS()
         {
@@ -34,12 +36,12 @@ namespace TravelExpertGUI
 
         private void LoadProductSuppliersInPackage()
         {
-            productSuppliersAssigned = PackageDB.GetProductSuppliersForOnePackage((Package)(cboPackages.SelectedItem));
-            productsSuppliersAvailable = PackageDB.GetProductSuppliersNotInOnePackage((Package)(cboPackages.SelectedItem));
+            startProductSuppliersAssigned = PackageDB.GetProductSuppliersForOnePackage((Package)(cboPackages.SelectedItem));
+            startProductsSuppliersAvailable = PackageDB.GetProductSuppliersNotInOnePackage((Package)(cboPackages.SelectedItem));
             lstProductSuppliersAssigned.Items.Clear();
-            lstProductSuppliersAssigned.Items.AddRange(productSuppliersAssigned.ToArray());
+            lstProductSuppliersAssigned.Items.AddRange(startProductSuppliersAssigned.ToArray());
             lstProductSuppliersAvailable.Items.Clear();
-            lstProductSuppliersAvailable.Items.AddRange(productsSuppliersAvailable.ToArray());
+            lstProductSuppliersAvailable.Items.AddRange(startProductsSuppliersAvailable.ToArray());
         }
 
         private void cboPackages_SelectedIndexChanged(object sender, EventArgs e)
@@ -57,15 +59,17 @@ namespace TravelExpertGUI
         private void btnAddSelected_Click(object sender, EventArgs e)
         {
             var selectedItem = lstProductSuppliersAvailable.SelectedItem;
-            
-            if(selectedItem != null) { 
-            lstProductSuppliersAssigned.Items.Add(selectedItem);
-            lstProductSuppliersAvailable.Items.Remove(selectedItem);
-            } else
+
+            if (selectedItem != null)
+            {
+                lstProductSuppliersAssigned.Items.Add(selectedItem);
+                lstProductSuppliersAvailable.Items.Remove(selectedItem);
+            }
+            else
             {
                 MessageBox.Show("You must select available product suppliers first");
             }
-            
+
         }
 
         private void btnRemoveSelected_Click(object sender, EventArgs e)
@@ -90,5 +94,60 @@ namespace TravelExpertGUI
             lstProductSuppliersAvailable.Items.AddRange(itemsToMove);
             lstProductSuppliersAssigned.Items.Clear();
         }
+
+        private void btnAccept_Click(object sender, EventArgs e)
+        {
+            List<ProductsSupplier> currentProductSuppliersAssigned = lstProductSuppliersAssigned.Items.OfType<ProductsSupplier>().ToList();
+            List<ProductsSupplier> currentProductSuppliersAvailable = lstProductSuppliersAvailable.Items.OfType<ProductsSupplier>().ToList();
+            // take the difference from the current and start assignment to find out which ones were added
+            List<ProductsSupplier> psToAddToPackage = currentProductSuppliersAssigned.Except(startProductSuppliersAssigned).ToList();
+            // take the difference from the current and start available to find out which ones were added
+            List <ProductsSupplier> psToRemoveFromPackage = currentProductSuppliersAvailable.Except(startProductsSuppliersAvailable).ToList();
+
+            // debug
+            //foreach (ProductsSupplier ps in psToAddToPackage)
+            //{
+            //    System.Diagnostics.Debug.WriteLine(ps.ToString());
+            //}
+            //System.Diagnostics.Debug.WriteLine("---");
+            //foreach (ProductsSupplier ps in psToRemoveFromPackage)
+            //{
+            //    System.Diagnostics.Debug.WriteLine(ps.ToString());
+            //}
+
+
+            // update selected package
+
+            using (TravelExpertsContext db = new TravelExpertsContext())
+            {
+                Package selectedPackage = (Package)(cboPackages.SelectedItem);
+
+                var packageToModify = db.Packages.Include(p => p.ProductSuppliers)
+                                     .FirstOrDefault(p => p.PackageId == selectedPackage.PackageId);
+                foreach (ProductsSupplier psToAdd in psToAddToPackage)
+                {
+                    packageToModify.ProductSuppliers.Add(psToAdd);
+                }
+                foreach (ProductsSupplier psToRemove in psToRemoveFromPackage)
+                {
+
+                    /* Note: I need to find psToRemove as an attached object.
+                     Directly calling Remove with psToRemove doesn't work
+                     to update junction table.*/ 
+                    var attachedPsToRemove = db.ProductsSuppliers.Find(psToRemove.ProductSupplierId);
+
+                    if (attachedPsToRemove != null)
+                    {
+                        // Remove psToRemove from the many-to-many relationship
+                        packageToModify.ProductSuppliers.Remove(attachedPsToRemove);
+                    }
+                }
+                db.SaveChanges();
+            }
+
+            DialogResult = DialogResult.OK;
+        }
+            
+        
     }
 }
