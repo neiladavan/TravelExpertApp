@@ -83,24 +83,6 @@ namespace TravelExpertGUI
             {
                 addModifyAndDeleteButtonsToDGV();
             }
-
-                        // Identify columns to be removed
-                        var ppsColumn = _mainDataGridView.Columns
-                            .OfType<DataGridViewColumn>()
-                            .Where(column => column.Name == "PackageId" || column.Name == "ProductSupplierId")
-                            .ToList(); // Materialize the collection to avoid modification issues during iteration
-
-                        // Remove identified columns
-                        foreach (var column in ppsColumn)
-                        {
-                            _mainDataGridView.Columns.Remove(column);
-                        }
-                        break;
-                    default:
-                        break;
-                }
-                addModifyAndDeleteButtonsToDGV();
-
                 foreach (DataGridViewColumn col in _mainDataGridView.Columns)
                 {
                     col.HeaderText = splitByCapitalLetter(col.HeaderText);
