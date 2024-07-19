@@ -35,34 +35,54 @@ namespace TravelExpertGUI
             selectedTable = tableName;
             try
             {
-                switch (tableName)
+            switch (tableName)
                 {
-                    case "Packages":
-                        _mainDataGridView.DataSource = PackageDB.GetPackageDTOs();
-                        _mainDataGridView.Columns[5].DefaultCellStyle.Format = "c";
-                        _mainDataGridView.Columns[6].DefaultCellStyle.Format = "c";
-                                        
-                        break;
-                    case "Products":
-                        _mainDataGridView.DataSource = ProductDB.GetProducts();
-                        var productSuppliersColumn = _mainDataGridView.Columns.OfType<DataGridViewColumn>().Where(column => column.Name == "ProductsSuppliers").First();
-                        if (productSuppliersColumn != null)
-                        {
-                            _mainDataGridView.Columns.Remove(productSuppliersColumn);
-                        }
-                        break;
-                    case "Suppliers":
-                        break;
-                    case "ProductsSuppliers":
-                        _mainDataGridView.DataSource = ProductsSupplierDB.GetProductsSuppliersAsNames();
-                        var productSupplierIdColumn = _mainDataGridView.Columns.OfType<DataGridViewColumn>().Where(column => column.Name == "ProductSupplierId").First();
-                        if (productSupplierIdColumn != null)
-                        {
-                            _mainDataGridView.Columns.Remove(productSupplierIdColumn);
-                        }
-                        break;
-                    case "PackagesProductsSuppliers":
-                        _mainDataGridView.DataSource = PackageDB.GetPackagesProductsSuppliers();
+                case "Packages":
+                    _mainDataGridView.DataSource = PackageDB.GetPackageDTOs();
+                    _mainDataGridView.Columns[5].DefaultCellStyle.Format = "c";
+                    _mainDataGridView.Columns[6].DefaultCellStyle.Format = "c";
+                    break;
+                case "Products":
+                    _mainDataGridView.DataSource = ProductDB.GetProducts();
+                    var productSuppliersColumn = _mainDataGridView.Columns.OfType<DataGridViewColumn>().Where(column => column.Name == "ProductsSuppliers").First();
+                    if (productSuppliersColumn != null)
+                    {
+                        _mainDataGridView.Columns.Remove(productSuppliersColumn);
+                    }
+                    break;
+                case "Suppliers":
+                    break;
+                case "ProductsSuppliers":
+                    _mainDataGridView.DataSource = ProductsSupplierDB.GetProductsSuppliersAsNames();
+                    var productSupplierIdColumn = _mainDataGridView.Columns.OfType<DataGridViewColumn>().Where(column => column.Name == "ProductSupplierId").First();
+                    if (productSupplierIdColumn != null)
+                    {
+                        _mainDataGridView.Columns.Remove(productSupplierIdColumn);
+                    }
+                    break;
+                case "PackagesProductsSuppliers":
+                    _mainDataGridView.DataSource = PackageDB.GetPackagesProductsSuppliers();
+                    btnAdd.Text = "Assign Product Suppliers";
+                    // Identify columns to be removed
+                    var ppsColumn = _mainDataGridView.Columns
+                        .OfType<DataGridViewColumn>()
+                        .Where(column => column.Name == "PackageId" || column.Name == "ProductSupplierId")
+                        .ToList(); // Materialize the collection to avoid modification issues during iteration
+
+                    // Remove identified columns
+                    foreach (var column in ppsColumn)
+                    {
+                        _mainDataGridView.Columns.Remove(column);
+                    }
+                    _mainDataGridView.Columns[0].HeaderText = "Package Name";
+                    break;
+                default:
+                    break;
+            }
+            if (selectedTable != "PackagesProductsSuppliers") // the modify case doesn't make sense here.
+            {
+                addModifyAndDeleteButtonsToDGV();
+            }
 
                         // Identify columns to be removed
                         var ppsColumn = _mainDataGridView.Columns
@@ -253,13 +273,6 @@ namespace TravelExpertGUI
                             ProductsSupplierDB.ModifyProductSupplier(productsSupplier);
                         }
                         selectedItem = selectedProductsSupplier;
-                        break;
-                    case "PackagesProductsSuppliers":
-                        System.Diagnostics.Debug.WriteLine("Modify Packages Products Supplier table!");
-                        var packagesProductsSuppliersList = (List<PackageProductSupplierDTO>)_mainDataGridView.DataSource;
-                        PackageProductSupplierDTO selectedPPSDTO = packagesProductsSuppliersList![e.RowIndex];
-                        
-                        System.Diagnostics.Debug.WriteLine($"{selectedPPSDTO.ProductSupplierId} {selectedPPSDTO.PackageId}");
                         break;
                     default:
                         break;
