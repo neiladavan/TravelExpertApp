@@ -112,6 +112,7 @@ namespace TravelExpertData
                 packageProductSuppliers = db.Packages
                     .Where(p => p.PackageId == package.PackageId)
                     .SelectMany(p => p.ProductSuppliers)
+                    .AsNoTracking()
                     .Include(ps => ps.Product) // Eager load Product
                     .Include(ps => ps.Supplier).ToList(); // Eager load Supplier
             }       
@@ -120,17 +121,17 @@ namespace TravelExpertData
 
         public static List<ProductsSupplier> GetProductSuppliersNotInOnePackage(Package package)
         {
-            List<ProductsSupplier> packageProductSuppliers = new List<ProductsSupplier>();
-
+            List<ProductsSupplier> productSuppliersNotInPackage = new List<ProductsSupplier>();
             using (TravelExpertsContext db = new TravelExpertsContext())
             {
-                // get all product suppliers in package
-                List<ProductsSupplier> packageProductSuppliersInPackage = GetProductSuppliersForOnePackage(package);
-                List<ProductsSupplier> allProductsSuppliers = ProductsSupplierDB.GetProductsSuppliers();
-
-                packageProductSuppliers = allProductsSuppliers.Except(packageProductSuppliersInPackage).ToList();
+                productSuppliersNotInPackage = db.ProductsSuppliers
+                    .Where(ps => !ps.Packages
+                    .Any(p => p.PackageId == package.PackageId))
+                    .Include(ps => ps.Product)
+                    .Include(ps => ps.Supplier)
+                    .ToList();
             }
-            return packageProductSuppliers;
+            return productSuppliersNotInPackage;
         }
     }
 }

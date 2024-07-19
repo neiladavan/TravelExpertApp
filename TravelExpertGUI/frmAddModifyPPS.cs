@@ -142,6 +142,7 @@ namespace TravelExpertGUI
                         packageToModify.ProductSuppliers.Remove(attachedPsToRemove);
                     }
                 }
+                
                 db.SaveChanges();
             }
 
