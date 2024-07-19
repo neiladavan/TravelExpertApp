@@ -1,8 +1,5 @@
-using System.Security.Cryptography;
 using System.Text;
 using TravelExpertData;
-using System.Linq;
-using Microsoft.EntityFrameworkCore;
 
 namespace TravelExpertGUI
 {

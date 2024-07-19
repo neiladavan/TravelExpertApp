@@ -60,6 +60,7 @@ namespace TravelExpertData
             using (TravelExpertsContext db = new TravelExpertsContext())
             {
                 productsSuppliers = db.ProductsSuppliers
+                    .AsNoTracking()
                     .Include(ps => ps.Product) // Eager load Product
                     .Include(ps => ps.Supplier).ToList(); // Eager load Supplier
             }
