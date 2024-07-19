@@ -33,8 +33,10 @@ namespace TravelExpertGUI
             _mainDataGridView.Columns.Clear();
             btnAdd.Text = $"Add {splitTableName}";
             selectedTable = tableName;
-            switch (tableName)
+            try
             {
+            switch (tableName)
+                {
                 case "Packages":
                     _mainDataGridView.DataSource = PackageDB.GetPackageDTOs();
                     _mainDataGridView.Columns[5].DefaultCellStyle.Format = "c";
@@ -82,12 +84,37 @@ namespace TravelExpertGUI
                 addModifyAndDeleteButtonsToDGV();
             }
 
-            foreach (DataGridViewColumn col in _mainDataGridView.Columns)
-            {
-                col.HeaderText = splitByCapitalLetter(col.HeaderText);
+                        // Identify columns to be removed
+                        var ppsColumn = _mainDataGridView.Columns
+                            .OfType<DataGridViewColumn>()
+                            .Where(column => column.Name == "PackageId" || column.Name == "ProductSupplierId")
+                            .ToList(); // Materialize the collection to avoid modification issues during iteration
+
+                        // Remove identified columns
+                        foreach (var column in ppsColumn)
+                        {
+                            _mainDataGridView.Columns.Remove(column);
+                        }
+                        break;
+                    default:
+                        break;
+                }
+                addModifyAndDeleteButtonsToDGV();
+
+                foreach (DataGridViewColumn col in _mainDataGridView.Columns)
+                {
+                    col.HeaderText = splitByCapitalLetter(col.HeaderText);
+                }
+                _mainDataGridView.AutoResizeColumns();
+                btnAdd.Enabled = true;
             }
-            _mainDataGridView.AutoResizeColumns();
-            btnAdd.Enabled = true;
+            catch (Exception ex)
+            {
+                ErrorExceptionHandler.Handle(ex);
+
+                // Gracefully exit the application
+                CleanupAndExit();
+            }
         }
 
 
@@ -128,52 +155,62 @@ namespace TravelExpertGUI
 
         private void btnAdd_Click(object sender, EventArgs e)
         {
-            switch (selectedTable)
+            try
             {
-                case "Packages":
-                    System.Diagnostics.Debug.WriteLine("Packages table is selected");
-                    using (frmAddModifyPackage frmAddModifyPackages = new frmAddModifyPackage())
-                    {
-                        DialogResult result = frmAddModifyPackages.ShowDialog();
-                        if (result == DialogResult.OK)
+                switch (selectedTable)
+                {
+                    case "Packages":
+                        System.Diagnostics.Debug.WriteLine("Packages table is selected");
+                        using (frmAddModifyPackage frmAddModifyPackages = new frmAddModifyPackage())
                         {
-                            Package package = frmAddModifyPackages.Package!;
-                            PackageDB.AddPackages(package);
+                            DialogResult result = frmAddModifyPackages.ShowDialog();
+                            if (result == DialogResult.OK)
+                            {
+                                Package package = frmAddModifyPackages.Package!;
+                                PackageDB.AddPackages(package);
+                            }
                         }
-                    }
 
-                    break;
-                case "ProductsSuppliers":
-                    System.Diagnostics.Debug.WriteLine("Products supplier table is selected");
-                    using (frmAddModifyProductsSuppliers frmAddModifyProductsSuppliers = new frmAddModifyProductsSuppliers())
-                    {
-                        DialogResult result = frmAddModifyProductsSuppliers.ShowDialog();
-                        if (result == DialogResult.OK)
+                        break;
+                    case "ProductsSuppliers":
+                        System.Diagnostics.Debug.WriteLine("Products supplier table is selected");
+                        using (frmAddModifyProductsSuppliers frmAddModifyProductsSuppliers = new frmAddModifyProductsSuppliers())
                         {
-                            ProductsSupplier productsSupplier = frmAddModifyProductsSuppliers.ProductsSupplier;
-                            ProductsSupplierDB.AddProductSupplier(productsSupplier);
+                            DialogResult result = frmAddModifyProductsSuppliers.ShowDialog();
+                            if (result == DialogResult.OK)
+                            {
+                                ProductsSupplier productsSupplier = frmAddModifyProductsSuppliers.ProductsSupplier;
+                                ProductsSupplierDB.AddProductSupplier(productsSupplier);
+                            }
                         }
-                    }
-                    break;
-                case "Products":
-                    var addModifyProductForm = new AddModifyProduct();
-                    if (addModifyProductForm.ShowDialog() == DialogResult.OK)
-                    {
-                        updateTableContext("Products");
-                    }
-                    break;
-                case "PackagesProductsSuppliers":
-                    System.Diagnostics.Debug.WriteLine("Packages Products supplier table is selected");
-                    using (frmAddModifyPPS frmAddModifyPPS = new frmAddModifyPPS())
-                    {
-                        DialogResult result = frmAddModifyPPS.ShowDialog();
-                    }
-                    break;
-                default:
-                    break;
+                        break;
+                    case "Products":
+                        var addModifyProductForm = new AddModifyProduct();
+                        if (addModifyProductForm.ShowDialog() == DialogResult.OK)
+                        {
+                            updateTableContext("Products");
+                        }
+                        break;
+                    case "PackagesProductsSuppliers":
+                        System.Diagnostics.Debug.WriteLine("Packages Products supplier table is selected");
+                        using (frmAddModifyPPS frmAddModifyPPS = new frmAddModifyPPS())
+                        {
+                            DialogResult result = frmAddModifyPPS.ShowDialog();
+                        }
+                        break;
+                    default:
+                        break;
 
+                }
+                updateTableContext(selectedTable);
             }
-            updateTableContext(selectedTable);
+            catch (Exception ex)
+            {
+                ErrorExceptionHandler.Handle(ex);
+
+                // Gracefully exit the application
+                CleanupAndExit();
+            }
         }
 
         //private void DeleteItem(object sender, DataGridViewCellEventArgs e, string selectedTable)
@@ -284,6 +321,15 @@ namespace TravelExpertGUI
         private void btnPackagesProductsSuppliers_Click(object sender, EventArgs e)
         {
             updateTableContext("PackagesProductsSuppliers");
+        }
+
+        private static void CleanupAndExit()
+        {
+            // Notify the user about the issue
+            MessageBox.Show("An unexpected error occurred. The application will now exit.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+            // Exit the application
+            Application.Exit();
         }
     }
 }
