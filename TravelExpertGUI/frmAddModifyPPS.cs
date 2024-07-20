@@ -58,12 +58,18 @@ namespace TravelExpertGUI
 
         private void btnAddSelected_Click(object sender, EventArgs e)
         {
-            var selectedItem = lstProductSuppliersAvailable.SelectedItem;
+            var selectedItems = lstProductSuppliersAvailable.SelectedItems;
 
-            if (selectedItem != null)
+            if (selectedItems != null)
             {
-                lstProductSuppliersAssigned.Items.Add(selectedItem);
-                lstProductSuppliersAvailable.Items.Remove(selectedItem);
+                foreach( var item in selectedItems)
+                {
+                    lstProductSuppliersAssigned.Items.Add(item);
+                }
+                while (selectedItems.Count > 0)
+                {
+                    lstProductSuppliersAvailable.Items.Remove(selectedItems[0]!);
+                }
             }
             else
             {
@@ -74,12 +80,18 @@ namespace TravelExpertGUI
 
         private void btnRemoveSelected_Click(object sender, EventArgs e)
         {
-            var selectedItem = lstProductSuppliersAssigned.SelectedItem;
+            var selectedItems = lstProductSuppliersAssigned.SelectedItems;
 
-            if (selectedItem != null)
+            if (selectedItems != null)
             {
-                lstProductSuppliersAvailable.Items.Add(selectedItem);
-                lstProductSuppliersAssigned.Items.Remove(selectedItem);
+                foreach(var item in selectedItems)
+                {
+                    lstProductSuppliersAvailable.Items.Add(item);
+                }
+                while (selectedItems.Count > 0)
+                {
+                    lstProductSuppliersAssigned.Items.Remove(selectedItems[0]!);
+                }
             }
             else
             {
