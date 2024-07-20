@@ -47,6 +47,7 @@
             lstProductSuppliersAvailable.FormattingEnabled = true;
             lstProductSuppliersAvailable.Location = new Point(12, 74);
             lstProductSuppliersAvailable.Name = "lstProductSuppliersAvailable";
+            lstProductSuppliersAvailable.SelectionMode = SelectionMode.MultiSimple;
             lstProductSuppliersAvailable.Size = new Size(327, 244);
             lstProductSuppliersAvailable.TabIndex = 0;
             // 
@@ -55,6 +56,7 @@
             lstProductSuppliersAssigned.FormattingEnabled = true;
             lstProductSuppliersAssigned.Location = new Point(412, 74);
             lstProductSuppliersAssigned.Name = "lstProductSuppliersAssigned";
+            lstProductSuppliersAssigned.SelectionMode = SelectionMode.MultiSimple;
             lstProductSuppliersAssigned.Size = new Size(327, 244);
             lstProductSuppliersAssigned.TabIndex = 1;
             // 
