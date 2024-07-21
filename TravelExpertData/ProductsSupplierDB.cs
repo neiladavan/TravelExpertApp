@@ -33,8 +33,8 @@ namespace TravelExpertData
                     p => new ProductsSupplierDTO
                     {
                         ProductSupplierId = p.ProductSupplierId,
-                        ProductName = p.Product.ProdName,
-                        SupplierName = p.Supplier.SupName 
+                        ProductName = p.Product!.ProdName,
+                        SupplierName = p.Supplier!.SupName! 
                     }).ToList();
                 return productsSuppliers;
             }
