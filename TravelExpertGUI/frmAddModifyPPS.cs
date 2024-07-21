@@ -15,10 +15,9 @@ namespace TravelExpertGUI
 {
     public partial class frmAddModifyPPS : Form
     {
-        List<Package> packages = new List<Package>();
-        List<ProductsSupplier> startProductSuppliersAssigned = new List<ProductsSupplier>();
-        List<ProductsSupplier> startProductsSuppliersAvailable = new List<ProductsSupplier>();
-        Package selectedPackage = null!;
+        List<Package> packages = [];
+        List<ProductsSupplier> startProductSuppliersAssigned = [];
+        List<ProductsSupplier> startProductsSuppliersAvailable = [];
 
         public frmAddModifyPPS()
         {
@@ -36,8 +35,8 @@ namespace TravelExpertGUI
 
         private void LoadProductSuppliersInPackage()
         {
-            startProductSuppliersAssigned = PackageDB.GetProductSuppliersForOnePackage((Package)(cboPackages.SelectedItem));
-            startProductsSuppliersAvailable = PackageDB.GetProductSuppliersNotInOnePackage((Package)(cboPackages.SelectedItem));
+            startProductSuppliersAssigned = PackageDB.GetProductSuppliersForOnePackage((Package)(cboPackages.SelectedItem!));
+            startProductsSuppliersAvailable = PackageDB.GetProductSuppliersNotInOnePackage((Package)(cboPackages.SelectedItem!));
             lstProductSuppliersAssigned.Items.Clear();
             lstProductSuppliersAssigned.Items.AddRange(startProductSuppliersAssigned.ToArray());
             lstProductSuppliersAvailable.Items.Clear();
@@ -58,46 +57,14 @@ namespace TravelExpertGUI
 
         private void btnAddSelected_Click(object sender, EventArgs e)
         {
-            var selectedItems = lstProductSuppliersAvailable.SelectedItems;
-
-            if (selectedItems != null)
-            {
-                foreach( var item in selectedItems)
-                {
-                    lstProductSuppliersAssigned.Items.Add(item);
-                }
-                while (selectedItems.Count > 0)
-                {
-                    lstProductSuppliersAvailable.Items.Remove(selectedItems[0]!);
-                }
-            }
-            else
-            {
-                MessageBox.Show("You must select available product suppliers first");
-            }
+            moveFromSourceListToTargetList(lstProductSuppliersAvailable, lstProductSuppliersAssigned);
 
         }
 
+        
         private void btnRemoveSelected_Click(object sender, EventArgs e)
         {
-            var selectedItems = lstProductSuppliersAssigned.SelectedItems;
-
-            if (selectedItems != null)
-            {
-                foreach(var item in selectedItems)
-                {
-                    lstProductSuppliersAvailable.Items.Add(item);
-                }
-                while (selectedItems.Count > 0)
-                {
-                    lstProductSuppliersAssigned.Items.Remove(selectedItems[0]!);
-                }
-            }
-            else
-            {
-                MessageBox.Show("You must select assigned product suppliers first");
-            }
-
+            moveFromSourceListToTargetList(lstProductSuppliersAssigned, lstProductSuppliersAvailable);
         }
 
         private void btnRemoveAll_Click(object sender, EventArgs e)
@@ -105,6 +72,29 @@ namespace TravelExpertGUI
             var itemsToMove = lstProductSuppliersAssigned.Items;
             lstProductSuppliersAvailable.Items.AddRange(itemsToMove);
             lstProductSuppliersAssigned.Items.Clear();
+        }
+
+        private void moveFromSourceListToTargetList(
+            ListBox sourceList,
+            ListBox destinationList)
+        {
+            var selectedItems = sourceList.SelectedItems;
+
+            if (selectedItems != null)
+            {
+                foreach (var item in selectedItems)
+                {
+                    destinationList.Items.Add(item);
+                }
+                while (selectedItems.Count > 0)
+                {
+                    sourceList.Items.Remove(selectedItems[0]!);
+                }
+            }
+            else
+            {
+                MessageBox.Show("You must select product suppliers first");
+            }
         }
 
         private void btnAccept_Click(object sender, EventArgs e)
@@ -132,13 +122,13 @@ namespace TravelExpertGUI
 
             using (TravelExpertsContext db = new TravelExpertsContext())
             {
-                Package selectedPackage = (Package)(cboPackages.SelectedItem);
+                Package selectedPackage = (Package)(cboPackages.SelectedItem!);
 
                 var packageToModify = db.Packages.Include(p => p.ProductSuppliers)
                                      .FirstOrDefault(p => p.PackageId == selectedPackage.PackageId);
                 foreach (ProductsSupplier psToAdd in psToAddToPackage)
                 {
-                    packageToModify.ProductSuppliers.Add(psToAdd);
+                    packageToModify!.ProductSuppliers.Add(psToAdd);
                 }
                 foreach (ProductsSupplier psToRemove in psToRemoveFromPackage)
                 {
@@ -151,7 +141,7 @@ namespace TravelExpertGUI
                     if (attachedPsToRemove != null)
                     {
                         // Remove psToRemove from the many-to-many relationship
-                        packageToModify.ProductSuppliers.Remove(attachedPsToRemove);
+                        packageToModify!.ProductSuppliers.Remove(attachedPsToRemove);
                     }
                 }
                 
