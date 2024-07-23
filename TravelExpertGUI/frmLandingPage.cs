@@ -32,54 +32,63 @@ namespace TravelExpertGUI
             selectedTable = tableName;
             try
             {
-            switch (tableName)
+                switch (tableName)
                 {
-                case "Packages":
-                    _mainDataGridView.DataSource = PackageDB.GetPackageDTOs();
-                    _mainDataGridView.Columns[5].DefaultCellStyle.Format = "c";
-                    _mainDataGridView.Columns[6].DefaultCellStyle.Format = "c";
-                    break;
-                case "Products":
-                    _mainDataGridView.DataSource = ProductDB.GetProducts();
-                    var productSuppliersColumn = _mainDataGridView.Columns.OfType<DataGridViewColumn>().Where(column => column.Name == "ProductsSuppliers").First();
-                    if (productSuppliersColumn != null)
-                    {
-                        _mainDataGridView.Columns.Remove(productSuppliersColumn);
-                    }
-                    break;
-                case "Suppliers":
-                    break;
-                case "ProductsSuppliers":
-                    _mainDataGridView.DataSource = ProductsSupplierDB.GetProductsSuppliersAsNames();
-                    var productSupplierIdColumn = _mainDataGridView.Columns.OfType<DataGridViewColumn>().Where(column => column.Name == "ProductSupplierId").First();
-                    if (productSupplierIdColumn != null)
-                    {
-                        _mainDataGridView.Columns.Remove(productSupplierIdColumn);
-                    }
-                    break;
-                case "PackagesProductsSuppliers":
-                    _mainDataGridView.DataSource = PackageDB.GetPackagesProductsSuppliers();
-                    btnAdd.Text = "Assign Product Suppliers";
-                    // Identify columns to be removed
-                    var ppsColumn = _mainDataGridView.Columns
-                        .OfType<DataGridViewColumn>()
-                        .Where(column => column.Name == "PackageId" || column.Name == "ProductSupplierId")
-                        .ToList(); // Materialize the collection to avoid modification issues during iteration
+                    case "Packages":
+                        _mainDataGridView.DataSource = PackageDB.GetPackageDTOs();
+                        _mainDataGridView.Columns[5].DefaultCellStyle.Format = "c";
+                        _mainDataGridView.Columns[6].DefaultCellStyle.Format = "c";
+                        break;
+                    case "Products":
+                        _mainDataGridView.DataSource = ProductDB.GetProducts();
+                        var productSuppliersColumn = _mainDataGridView.Columns.OfType<DataGridViewColumn>().Where(column => column.Name == "ProductsSuppliers").First();
+                        if (productSuppliersColumn != null)
+                        {
+                            _mainDataGridView.Columns.Remove(productSuppliersColumn);
+                        }
+                        break;
+                    case "Suppliers":
+                        _mainDataGridView.DataSource = SupplierDB.GetSuppliers();
+                        var columnsToRemove = _mainDataGridView.Columns.OfType<DataGridViewColumn>().Where(column => column.Name == "ProductsSuppliers" || column.Name == "SupplierContacts").ToList();
+                        if (columnsToRemove != null)
+                        {   
+                            foreach(var column in columnsToRemove)
+                            {
+                                _mainDataGridView.Columns.Remove(column);
+                            }
+                        }
+                        break;
+                    case "ProductsSuppliers":
+                        _mainDataGridView.DataSource = ProductsSupplierDB.GetProductsSuppliersAsNames();
+                        var productSupplierIdColumn = _mainDataGridView.Columns.OfType<DataGridViewColumn>().Where(column => column.Name == "ProductSupplierId").First();
+                        if (productSupplierIdColumn != null)
+                        {
+                            _mainDataGridView.Columns.Remove(productSupplierIdColumn);
+                        }
+                        break;
+                    case "PackagesProductsSuppliers":
+                        _mainDataGridView.DataSource = PackageDB.GetPackagesProductsSuppliers();
+                        btnAdd.Text = "Assign Product Suppliers";
+                        // Identify columns to be removed
+                        var ppsColumn = _mainDataGridView.Columns
+                            .OfType<DataGridViewColumn>()
+                            .Where(column => column.Name == "PackageId" || column.Name == "ProductSupplierId")
+                            .ToList(); // Materialize the collection to avoid modification issues during iteration
 
-                    // Remove identified columns
-                    foreach (var column in ppsColumn)
-                    {
-                        _mainDataGridView.Columns.Remove(column);
-                    }
-                    _mainDataGridView.Columns[0].HeaderText = "Package Name";
-                    break;
-                default:
-                    break;
-            }
-            if (selectedTable != "PackagesProductsSuppliers") // the modify case doesn't make sense here.
-            {
-                addModifyAndDeleteButtonsToDGV();
-            }
+                        // Remove identified columns
+                        foreach (var column in ppsColumn)
+                        {
+                            _mainDataGridView.Columns.Remove(column);
+                        }
+                        _mainDataGridView.Columns[0].HeaderText = "Package Name";
+                        break;
+                    default:
+                        break;
+                }
+                if (selectedTable != "PackagesProductsSuppliers") // the modify case doesn't make sense here.
+                {
+                    addModifyAndDeleteButtonsToDGV();
+                }
                 foreach (DataGridViewColumn col in _mainDataGridView.Columns)
                 {
                     col.HeaderText = splitByCapitalLetter(col.HeaderText);
@@ -170,6 +179,13 @@ namespace TravelExpertGUI
                             updateTableContext("Products");
                         }
                         break;
+                    case "Suppliers":
+                        var addModifySupplierForm = new AddModifySupplier();
+                        if (addModifySupplierForm.ShowDialog() == DialogResult.OK)
+                        {
+                            updateTableContext("Suppliers");
+                        }
+                        break;
                     case "PackagesProductsSuppliers":
                         System.Diagnostics.Debug.WriteLine("Packages Products supplier table is selected");
                         using (frmAddModifyPPS frmAddModifyPPS = new frmAddModifyPPS())
@@ -213,9 +229,12 @@ namespace TravelExpertGUI
                         Product selectedProduct = productList[e.RowIndex];
                         var addModifyProductForm = new AddModifyProduct() { Product = selectedProduct };
                         result = addModifyProductForm.ShowDialog();
-
-                        selectedItem = selectedProduct;
-
+                        break;
+                    case "Suppliers":
+                        var supplierList = (List<Supplier>)_mainDataGridView.DataSource;
+                        var selectedSupplier = supplierList[e.RowIndex];
+                        var addModifySupplierForm = new AddModifySupplier() { Supplier = selectedSupplier };
+                        result = addModifySupplierForm.ShowDialog();
                         break;
                     case "Packages":
                         // Access the DataSource
@@ -309,6 +328,11 @@ namespace TravelExpertGUI
 
             // Exit the application
             Application.Exit();
+        }
+
+        private void btnSuppliers_Click(object sender, EventArgs e)
+        {
+            updateTableContext("Suppliers");
         }
     }
 }
