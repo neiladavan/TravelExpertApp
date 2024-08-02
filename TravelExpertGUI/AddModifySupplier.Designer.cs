@@ -38,18 +38,22 @@
             // 
             // btnCancel
             // 
-            btnCancel.Location = new Point(474, 290);
+            btnCancel.Font = new Font("Segoe UI", 13.8F);
+            btnCancel.Location = new Point(257, 146);
+            btnCancel.Margin = new Padding(2);
             btnCancel.Name = "btnCancel";
-            btnCancel.Size = new Size(219, 80);
+            btnCancel.Size = new Size(135, 50);
             btnCancel.TabIndex = 11;
             btnCancel.Text = "Cancel";
             btnCancel.UseVisualStyleBackColor = true;
             // 
             // btnOK
             // 
-            btnOK.Location = new Point(192, 291);
+            btnOK.Font = new Font("Segoe UI", 13.8F);
+            btnOK.Location = new Point(83, 147);
+            btnOK.Margin = new Padding(2);
             btnOK.Name = "btnOK";
-            btnOK.Size = new Size(215, 78);
+            btnOK.Size = new Size(132, 49);
             btnOK.TabIndex = 10;
             btnOK.Text = "OK";
             btnOK.UseVisualStyleBackColor = true;
@@ -57,52 +61,62 @@
             // 
             // txtSupName
             // 
-            txtSupName.Location = new Point(335, 169);
+            txtSupName.Font = new Font("Segoe UI", 13.8F);
+            txtSupName.Location = new Point(201, 86);
+            txtSupName.Margin = new Padding(2);
             txtSupName.Name = "txtSupName";
-            txtSupName.Size = new Size(389, 39);
+            txtSupName.Size = new Size(241, 38);
             txtSupName.TabIndex = 9;
             // 
             // txtSupID
             // 
-            txtSupID.Location = new Point(335, 80);
+            txtSupID.Font = new Font("Segoe UI", 13.8F);
+            txtSupID.Location = new Point(201, 30);
+            txtSupID.Margin = new Padding(2);
             txtSupID.Name = "txtSupID";
             txtSupID.ReadOnly = true;
-            txtSupID.Size = new Size(389, 39);
+            txtSupID.Size = new Size(241, 38);
             txtSupID.TabIndex = 8;
             // 
             // lblSupName
             // 
             lblSupName.AutoSize = true;
-            lblSupName.Location = new Point(76, 172);
+            lblSupName.Font = new Font("Segoe UI", 13.8F);
+            lblSupName.Location = new Point(26, 89);
+            lblSupName.Margin = new Padding(2, 0, 2, 0);
             lblSupName.Name = "lblSupName";
-            lblSupName.Size = new Size(178, 32);
+            lblSupName.Size = new Size(171, 31);
             lblSupName.TabIndex = 7;
             lblSupName.Text = "Supplier Name:";
             // 
             // lblSupID
             // 
             lblSupID.AutoSize = true;
-            lblSupID.Location = new Point(76, 80);
+            lblSupID.Font = new Font("Segoe UI", 13.8F);
+            lblSupID.Location = new Point(67, 30);
+            lblSupID.Margin = new Padding(2, 0, 2, 0);
             lblSupID.Name = "lblSupID";
-            lblSupID.Size = new Size(134, 32);
+            lblSupID.Size = new Size(130, 31);
             lblSupID.TabIndex = 6;
             lblSupID.Text = "Supplier Id:";
             // 
             // AddModifySupplier
             // 
             AcceptButton = btnOK;
-            AutoScaleDimensions = new SizeF(13F, 32F);
+            AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             CancelButton = btnCancel;
-            ClientSize = new Size(800, 450);
+            ClientSize = new Size(462, 219);
             Controls.Add(btnCancel);
             Controls.Add(btnOK);
             Controls.Add(txtSupName);
             Controls.Add(txtSupID);
             Controls.Add(lblSupName);
             Controls.Add(lblSupID);
+            Margin = new Padding(2);
             Name = "AddModifySupplier";
-            Text = "AddModifySupplier";
+            StartPosition = FormStartPosition.CenterScreen;
+            Text = "Add/Modify Supplier";
             Load += AddModifySupplier_Load;
             ResumeLayout(false);
             PerformLayout();

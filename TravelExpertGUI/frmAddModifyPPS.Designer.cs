@@ -44,45 +44,55 @@
             // 
             // lstProductSuppliersAvailable
             // 
+            lstProductSuppliersAvailable.Font = new Font("Segoe UI", 13.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
             lstProductSuppliersAvailable.FormattingEnabled = true;
-            lstProductSuppliersAvailable.Location = new Point(12, 74);
+            lstProductSuppliersAvailable.ItemHeight = 31;
+            lstProductSuppliersAvailable.Location = new Point(20, 115);
+            lstProductSuppliersAvailable.Margin = new Padding(5, 5, 5, 5);
             lstProductSuppliersAvailable.Name = "lstProductSuppliersAvailable";
             lstProductSuppliersAvailable.SelectionMode = SelectionMode.MultiSimple;
-            lstProductSuppliersAvailable.Size = new Size(327, 244);
+            lstProductSuppliersAvailable.Size = new Size(529, 376);
             lstProductSuppliersAvailable.TabIndex = 0;
             // 
             // lstProductSuppliersAssigned
             // 
+            lstProductSuppliersAssigned.Font = new Font("Segoe UI", 13.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
             lstProductSuppliersAssigned.FormattingEnabled = true;
-            lstProductSuppliersAssigned.Location = new Point(412, 74);
+            lstProductSuppliersAssigned.ItemHeight = 31;
+            lstProductSuppliersAssigned.Location = new Point(670, 115);
+            lstProductSuppliersAssigned.Margin = new Padding(5, 5, 5, 5);
             lstProductSuppliersAssigned.Name = "lstProductSuppliersAssigned";
             lstProductSuppliersAssigned.SelectionMode = SelectionMode.MultiSimple;
-            lstProductSuppliersAssigned.Size = new Size(327, 244);
+            lstProductSuppliersAssigned.Size = new Size(529, 376);
             lstProductSuppliersAssigned.TabIndex = 1;
             // 
             // label1
             // 
             label1.AutoSize = true;
-            label1.Location = new Point(12, 10);
+            label1.Location = new Point(20, 16);
+            label1.Margin = new Padding(5, 0, 5, 0);
             label1.Name = "label1";
-            label1.Size = new Size(107, 20);
+            label1.Size = new Size(165, 31);
             label1.TabIndex = 2;
             label1.Text = "Select Package";
             // 
             // cboPackages
             // 
+            cboPackages.Font = new Font("Segoe UI", 13.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
             cboPackages.FormattingEnabled = true;
-            cboPackages.Location = new Point(125, 7);
+            cboPackages.Location = new Point(203, 11);
+            cboPackages.Margin = new Padding(5, 5, 5, 5);
             cboPackages.Name = "cboPackages";
-            cboPackages.Size = new Size(260, 28);
+            cboPackages.Size = new Size(420, 39);
             cboPackages.TabIndex = 3;
             cboPackages.SelectedIndexChanged += cboPackages_SelectedIndexChanged;
             // 
             // btnAccept
             // 
-            btnAccept.Location = new Point(245, 324);
+            btnAccept.Location = new Point(398, 502);
+            btnAccept.Margin = new Padding(5, 5, 5, 5);
             btnAccept.Name = "btnAccept";
-            btnAccept.Size = new Size(94, 29);
+            btnAccept.Size = new Size(153, 45);
             btnAccept.TabIndex = 4;
             btnAccept.Text = "&Accept";
             btnAccept.UseVisualStyleBackColor = true;
@@ -90,18 +100,20 @@
             // 
             // btnCancel
             // 
-            btnCancel.Location = new Point(412, 324);
+            btnCancel.Location = new Point(670, 502);
+            btnCancel.Margin = new Padding(5, 5, 5, 5);
             btnCancel.Name = "btnCancel";
-            btnCancel.Size = new Size(94, 29);
+            btnCancel.Size = new Size(153, 45);
             btnCancel.TabIndex = 5;
             btnCancel.Text = "&Cancel";
             btnCancel.UseVisualStyleBackColor = true;
             // 
             // btnAddAll
             // 
-            btnAddAll.Location = new Point(345, 115);
+            btnAddAll.Location = new Point(561, 178);
+            btnAddAll.Margin = new Padding(5, 5, 5, 5);
             btnAddAll.Name = "btnAddAll";
-            btnAddAll.Size = new Size(61, 29);
+            btnAddAll.Size = new Size(99, 45);
             btnAddAll.TabIndex = 6;
             btnAddAll.Text = ">>";
             btnAddAll.UseVisualStyleBackColor = true;
@@ -109,9 +121,10 @@
             // 
             // btnAddSelected
             // 
-            btnAddSelected.Location = new Point(345, 150);
+            btnAddSelected.Location = new Point(561, 232);
+            btnAddSelected.Margin = new Padding(5, 5, 5, 5);
             btnAddSelected.Name = "btnAddSelected";
-            btnAddSelected.Size = new Size(61, 29);
+            btnAddSelected.Size = new Size(99, 45);
             btnAddSelected.TabIndex = 7;
             btnAddSelected.Text = ">";
             btnAddSelected.UseVisualStyleBackColor = true;
@@ -119,9 +132,10 @@
             // 
             // btnRemoveSelected
             // 
-            btnRemoveSelected.Location = new Point(345, 185);
+            btnRemoveSelected.Location = new Point(561, 287);
+            btnRemoveSelected.Margin = new Padding(5, 5, 5, 5);
             btnRemoveSelected.Name = "btnRemoveSelected";
-            btnRemoveSelected.Size = new Size(61, 29);
+            btnRemoveSelected.Size = new Size(99, 45);
             btnRemoveSelected.TabIndex = 8;
             btnRemoveSelected.Text = "<";
             btnRemoveSelected.UseVisualStyleBackColor = true;
@@ -129,9 +143,10 @@
             // 
             // btnRemoveAll
             // 
-            btnRemoveAll.Location = new Point(345, 220);
+            btnRemoveAll.Location = new Point(561, 341);
+            btnRemoveAll.Margin = new Padding(5, 5, 5, 5);
             btnRemoveAll.Name = "btnRemoveAll";
-            btnRemoveAll.Size = new Size(61, 29);
+            btnRemoveAll.Size = new Size(99, 45);
             btnRemoveAll.TabIndex = 9;
             btnRemoveAll.Text = "<<";
             btnRemoveAll.UseVisualStyleBackColor = true;
@@ -140,28 +155,30 @@
             // lblAvailablePS
             // 
             lblAvailablePS.AutoSize = true;
-            lblAvailablePS.Location = new Point(12, 51);
+            lblAvailablePS.Location = new Point(20, 79);
+            lblAvailablePS.Margin = new Padding(5, 0, 5, 0);
             lblAvailablePS.Name = "lblAvailablePS";
-            lblAvailablePS.Size = new Size(197, 20);
+            lblAvailablePS.Size = new Size(305, 31);
             lblAvailablePS.TabIndex = 10;
             lblAvailablePS.Text = "Available Products Suppliers";
             // 
             // lblAssignedPS
             // 
             lblAssignedPS.AutoSize = true;
-            lblAssignedPS.Location = new Point(412, 51);
+            lblAssignedPS.Location = new Point(670, 79);
+            lblAssignedPS.Margin = new Padding(5, 0, 5, 0);
             lblAssignedPS.Name = "lblAssignedPS";
-            lblAssignedPS.Size = new Size(189, 20);
+            lblAssignedPS.Size = new Size(295, 31);
             lblAssignedPS.TabIndex = 11;
             lblAssignedPS.Text = "Assigned Product Suppliers";
             // 
             // frmAddModifyPPS
             // 
             AcceptButton = btnAccept;
-            AutoScaleDimensions = new SizeF(8F, 20F);
+            AutoScaleDimensions = new SizeF(13F, 31F);
             AutoScaleMode = AutoScaleMode.Font;
             CancelButton = btnCancel;
-            ClientSize = new Size(757, 373);
+            ClientSize = new Size(1230, 578);
             Controls.Add(lblAssignedPS);
             Controls.Add(lblAvailablePS);
             Controls.Add(btnRemoveAll);
@@ -174,7 +191,10 @@
             Controls.Add(label1);
             Controls.Add(lstProductSuppliersAssigned);
             Controls.Add(lstProductSuppliersAvailable);
+            Font = new Font("Segoe UI", 13.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            Margin = new Padding(5, 5, 5, 5);
             Name = "frmAddModifyPPS";
+            StartPosition = FormStartPosition.CenterScreen;
             Text = "Assign Product Suppliers";
             Load += frmAddModifyPPS_Load;
             ResumeLayout(false);
