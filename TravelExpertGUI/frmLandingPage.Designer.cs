@@ -142,6 +142,7 @@
             // 
             // _mainDataGridView
             // 
+            _mainDataGridView.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
             _mainDataGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             _mainDataGridView.Location = new Point(249, 14);
             _mainDataGridView.Margin = new Padding(5);
