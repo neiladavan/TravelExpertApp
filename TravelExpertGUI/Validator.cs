@@ -177,10 +177,10 @@ namespace TravelExpertGUI
             }
 
             DateTime today = DateTime.Today;
-            if (startDate < today)
+            if (startDate < today && endDate < today)
             {
                 isValid = false;
-                MessageBox.Show(startDateTextBox.Tag + " should not be in the past.");
+                MessageBox.Show($"{startDateTextBox.Tag} and {endDateTextBox.Tag} should not be in the past.");
                 startDateTextBox.SelectAll();
                 startDateTextBox.Focus();
             }

@@ -1,4 +1,6 @@
+using System.Data;
 using System.Text;
+using System.Windows.Forms;
 using TravelExpertData;
 
 namespace TravelExpertGUI
@@ -20,6 +22,7 @@ namespace TravelExpertGUI
         {
             // add button default should be disabled since no selected table yet.
             btnAdd.Enabled = false;
+            txtSearch.Enabled = false;
             panMenu.Dock = DockStyle.Left;
             _mainDataGridView.Columns.Clear();
         }
@@ -29,6 +32,7 @@ namespace TravelExpertGUI
             string splitTableName = splitByCapitalLetter(tableName);
             _mainDataGridView.Columns.Clear();
             btnAdd.Text = $"Add {splitTableName}";
+            txtSearch.Text = "";
             selectedTable = tableName;
             try
             {
@@ -95,6 +99,12 @@ namespace TravelExpertGUI
                 }
                 _mainDataGridView.AutoResizeColumns();
                 btnAdd.Enabled = true;
+                txtSearch.Enabled = true;
+
+                // Attach the TextChanged event handler for the search box
+                // Safely attach the TextChanged event handler for the search box
+                txtSearch.TextChanged -= txtSearch_TextChanged; // Always safe to unsubscribe
+                txtSearch.TextChanged += txtSearch_TextChanged; // Then subscribe
             }
             catch (Exception ex)
             {
@@ -105,6 +115,95 @@ namespace TravelExpertGUI
             }
         }
 
+        private void txtSearch_TextChanged(object sender, EventArgs e)
+        {
+            string searchText = txtSearch.Text.ToLower();
+
+            if (string.IsNullOrWhiteSpace(searchText))
+            {
+                // If search text is empty, show all data
+                switch (selectedTable)
+                {
+                    case "Packages":
+                        _mainDataGridView.DataSource = PackageDB.GetPackageDTOs();
+                        break;
+                    case "Products":
+                        _mainDataGridView.DataSource = ProductDB.GetProducts();
+                        HideUnwantedColumns(_mainDataGridView, new List<string> { "ProductsSuppliers" });
+                        break;
+                    case "Suppliers":
+                        _mainDataGridView.DataSource = SupplierDB.GetSuppliers();
+                        HideUnwantedColumns(_mainDataGridView, new List<string> { "ProductsSuppliers", "SupplierContacts" });
+                        break;
+                    case "ProductsSuppliers":
+                        _mainDataGridView.DataSource = ProductsSupplierDB.GetProductsSuppliersAsNames();
+                        HideUnwantedColumns(_mainDataGridView, new List<string> { "ProductSupplierId" });
+                        break;
+                    case "PackagesProductsSuppliers":
+                        _mainDataGridView.DataSource = PackageDB.GetPackagesProductsSuppliers();
+                        HideUnwantedColumns(_mainDataGridView, new List<string> { "PackageId", "ProductSupplierId" });
+                        break;
+                }
+            }
+            else
+            {
+                // Filter data based on search text
+                switch (selectedTable)
+                {
+                    case "Packages":
+                        var packages = PackageDB.GetPackageDTOs();
+                        var filteredPackages = packages.Where(p => p.PkgName.ToLower().Contains(searchText)).ToList();
+                        _mainDataGridView.DataSource = filteredPackages;
+                        break;
+                    case "Products":
+                        var products = ProductDB.GetProducts();
+                        var filteredProducts = products.Where(p => p.ProdName.ToLower().Contains(searchText)).ToList();
+                        _mainDataGridView.DataSource = filteredProducts;
+                        HideUnwantedColumns(_mainDataGridView, new List<string> { "ProductsSuppliers" });
+                        break;
+                    case "Suppliers":
+                        var suppliers = SupplierDB.GetSuppliers();
+                        var filteredSuppliers = suppliers.Where(s => s.SupName.ToLower().Contains(searchText)).ToList();
+                        _mainDataGridView.DataSource = filteredSuppliers;
+                        HideUnwantedColumns(_mainDataGridView, new List<string> { "ProductsSuppliers", "SupplierContacts" });
+                        break;
+                    case "ProductsSuppliers":
+                        var productSuppliers = ProductsSupplierDB.GetProductsSuppliersAsNames();
+                        var filteredProductSuppliers = productSuppliers.Where(ps => ps.ProductName.ToLower().Contains(searchText) ||
+                                                                                     ps.SupplierName.ToLower().Contains(searchText)).ToList();
+                        _mainDataGridView.DataSource = filteredProductSuppliers;
+                        HideUnwantedColumns(_mainDataGridView, new List<string> { "ProductSupplierId" });
+                        break;
+                    case "PackagesProductsSuppliers":
+                        var packagesProductsSuppliers = PackageDB.GetPackagesProductsSuppliers();
+                        var filteredPackagesProductsSuppliers = packagesProductsSuppliers.Where(pp => pp.PkgName.ToLower().Contains(searchText) ||
+                                                                                                     pp.ProductSupplierName.ToLower().Contains(searchText)).ToList();
+                        _mainDataGridView.DataSource = filteredPackagesProductsSuppliers;
+                        HideUnwantedColumns(_mainDataGridView, new List<string> { "PackageId", "ProductSupplierId" });
+                        break;
+                }
+            }
+            _mainDataGridView.AutoResizeColumns();
+        }
+
+        /// <summary>
+        /// Hide columns that are not needed on the main data grid view
+        /// </summary>
+        /// <param name="dataGridView">main data grid view</param>
+        /// <param name="columnsToHide">list of columns to be hidden</param>
+        private void HideUnwantedColumns(DataGridView dataGridView, List<string> columnsToHide)
+        {
+            foreach (var columnName in columnsToHide)
+            {
+                var column = dataGridView.Columns.OfType<DataGridViewColumn>()
+                    .FirstOrDefault(col => col.Name == columnName);
+
+                if (column != null)
+                {
+                    dataGridView.Columns.Remove(column);
+                }
+            }
+        }
 
         // https://stackoverflow.com/questions/4488969/split-a-string-by-capital-letters Author: Guffa
         private static string splitByCapitalLetter(string originalString)
@@ -288,12 +387,23 @@ namespace TravelExpertGUI
         {
             if (e.RowIndex < 0) return;
 
-            int column_count = _mainDataGridView.Columns.Count;
+            // Get the clicked column
+            DataGridViewColumn column = _mainDataGridView.Columns[e.ColumnIndex];
+
+            if (column is DataGridViewButtonColumn buttonColumn)
+            {
+                if (buttonColumn.Text == "Modify")
+                {
+                    ModifyItem(sender, e, selectedTable);
+                }
+            }
+
+            //int column_count = _mainDataGridView.Columns.Count;
             // index values for Modify and Delete button columns
-            int ModifyIndex = column_count - 1;
+            //int ModifyIndex = column_count - 1;
             //int DeleteIndex = column_count - 1;
 
-            if (e.ColumnIndex == ModifyIndex) ModifyItem(sender, e, selectedTable);
+            //if (e.ColumnIndex == ModifyIndex) ModifyItem(sender, e, selectedTable);
             //else if (e.ColumnIndex == DeleteIndex) DeleteItem(sender, e, selectedTable);
         }
 

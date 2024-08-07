@@ -37,6 +37,8 @@
             btnAdd = new Button();
             btnExit = new Button();
             _mainDataGridView = new DataGridView();
+            txtSearch = new TextBox();
+            label1 = new Label();
             panMenu.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)_mainDataGridView).BeginInit();
             SuspendLayout();
@@ -119,7 +121,7 @@
             // btnAdd
             // 
             btnAdd.Font = new Font("Segoe UI", 19F);
-            btnAdd.Location = new Point(249, 544);
+            btnAdd.Location = new Point(249, 564);
             btnAdd.Margin = new Padding(5);
             btnAdd.Name = "btnAdd";
             btnAdd.Size = new Size(440, 93);
@@ -131,7 +133,7 @@
             // btnExit
             // 
             btnExit.Font = new Font("Segoe UI", 19F);
-            btnExit.Location = new Point(843, 544);
+            btnExit.Location = new Point(843, 564);
             btnExit.Margin = new Padding(5);
             btnExit.Name = "btnExit";
             btnExit.Size = new Size(406, 93);
@@ -144,7 +146,7 @@
             // 
             _mainDataGridView.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
             _mainDataGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            _mainDataGridView.Location = new Point(249, 14);
+            _mainDataGridView.Location = new Point(249, 57);
             _mainDataGridView.Margin = new Padding(5);
             _mainDataGridView.Name = "_mainDataGridView";
             _mainDataGridView.RowHeadersWidth = 51;
@@ -152,11 +154,30 @@
             _mainDataGridView.TabIndex = 4;
             _mainDataGridView.CellClick += _mainDataGridView_CellClick;
             // 
+            // txtSearch
+            // 
+            txtSearch.Location = new Point(442, 11);
+            txtSearch.Name = "txtSearch";
+            txtSearch.Size = new Size(274, 38);
+            txtSearch.TabIndex = 5;
+            // 
+            // label1
+            // 
+            label1.Font = new Font("Segoe UI", 10F);
+            label1.Location = new Point(249, 11);
+            label1.Name = "label1";
+            label1.Size = new Size(168, 38);
+            label1.TabIndex = 6;
+            label1.Text = "Search By Name:";
+            label1.TextAlign = ContentAlignment.MiddleCenter;
+            // 
             // frmLandingPage
             // 
             AutoScaleDimensions = new SizeF(13F, 31F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1291, 671);
+            Controls.Add(label1);
+            Controls.Add(txtSearch);
             Controls.Add(_mainDataGridView);
             Controls.Add(btnExit);
             Controls.Add(btnAdd);
@@ -170,6 +191,7 @@
             panMenu.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)_mainDataGridView).EndInit();
             ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion
@@ -183,5 +205,7 @@
         private DataGridView _mainDataGridView;
         private Button btnProductsSuppliers;
         private Button btnPackagesProductsSuppliers;
+        private TextBox txtSearch;
+        private Label label1;
     }
 }
