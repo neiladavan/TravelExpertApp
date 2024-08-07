@@ -176,7 +176,22 @@ namespace TravelExpertGUI
                 return false;
             }
 
-            if (endDate < startDate)
+            DateTime today = DateTime.Today;
+            if (startDate < today)
+            {
+                isValid = false;
+                MessageBox.Show(startDateTextBox.Tag + " should not be in the past.");
+                startDateTextBox.SelectAll();
+                startDateTextBox.Focus();
+            }
+            else if (endDate < today)
+            {
+                isValid = false;
+                MessageBox.Show(endDateTextBox.Tag + " should not be in the past.");
+                endDateTextBox.SelectAll();
+                endDateTextBox.Focus();
+            }
+            else if (endDate < startDate)
             {
                 isValid = false;
                 MessageBox.Show(startDateTextBox.Tag + " should not greater than " + endDateTextBox.Tag);
