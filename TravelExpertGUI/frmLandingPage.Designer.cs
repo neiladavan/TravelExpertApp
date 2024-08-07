@@ -163,11 +163,13 @@
             // 
             // label1
             // 
+            label1.Font = new Font("Segoe UI", 10F);
             label1.Location = new Point(249, 11);
             label1.Name = "label1";
-            label1.Size = new Size(187, 38);
+            label1.Size = new Size(168, 38);
             label1.TabIndex = 6;
-            label1.Text = "Search Keyword:";
+            label1.Text = "Search By Name:";
+            label1.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // frmLandingPage
             // 

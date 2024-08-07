@@ -152,9 +152,7 @@ namespace TravelExpertGUI
                 {
                     case "Packages":
                         var packages = PackageDB.GetPackageDTOs();
-                        var filteredPackages = packages.Where(p => p.PkgName.ToLower().Contains(searchText) ||
-                                                                    p.PkgDesc.ToLower().Contains(searchText) ||
-                                                                    p.PackageId.ToString().Contains(searchText)).ToList();
+                        var filteredPackages = packages.Where(p => p.PkgName.ToLower().Contains(searchText)).ToList();
                         _mainDataGridView.DataSource = filteredPackages;
                         break;
                     case "Products":
