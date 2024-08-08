@@ -22,8 +22,10 @@ namespace TravelExpertGUI
         {
             try
             {
+                _mainDataGridView.Columns.Clear();
                 _currentTableContext = tableContext;
                 _currentTableContext.UpdateTable(_mainDataGridView, txtSearch, btnAdd);
+                _mainDataGridView.AutoResizeColumns();
             }
             catch (Exception ex)
             {
