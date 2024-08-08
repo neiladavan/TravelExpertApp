@@ -98,8 +98,10 @@ namespace TravelExpertGUI
             if (dataGridView != null && e.RowIndex >= 0 && e.ColumnIndex >= 0)
             {
                 _currentTableContext?.Modify(dataGridView, e);
+                _mainDataGridView.Columns.Clear();
+                _currentTableContext?.UpdateTable(_mainDataGridView, txtSearch, btnAdd);
+                _mainDataGridView.AutoResizeColumns();
             }
-            
         }
 
         // method to add functionality to modify and delete buttons populated in data grid view
