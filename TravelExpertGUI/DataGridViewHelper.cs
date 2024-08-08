@@ -35,19 +35,5 @@ namespace TravelExpertGUI
                 }
             }
         }
-
-        // https://stackoverflow.com/questions/4488969/split-a-string-by-capital-letters Author: Guffa
-        private static string splitByCapitalLetter(string originalString)
-        {
-            string splitOriginalString;
-            StringBuilder builder = new StringBuilder();
-            foreach (char c in originalString)
-            {
-                if (Char.IsUpper(c) && builder.Length > 0) builder.Append(' ');
-                builder.Append(c);
-            }
-            splitOriginalString = builder.ToString();
-            return splitOriginalString;
-        }
     }
 }
