@@ -38,9 +38,10 @@
             // 
             // cboProduct
             // 
+            cboProduct.DropDownStyle = ComboBoxStyle.DropDownList;
             cboProduct.FormattingEnabled = true;
             cboProduct.Location = new Point(132, 23);
-            cboProduct.Margin = new Padding(5, 5, 5, 5);
+            cboProduct.Margin = new Padding(5);
             cboProduct.Name = "cboProduct";
             cboProduct.Size = new Size(547, 39);
             cboProduct.TabIndex = 0;
@@ -67,9 +68,10 @@
             // 
             // cboSupplier
             // 
+            cboSupplier.DropDownStyle = ComboBoxStyle.DropDownList;
             cboSupplier.FormattingEnabled = true;
             cboSupplier.Location = new Point(132, 79);
-            cboSupplier.Margin = new Padding(5, 5, 5, 5);
+            cboSupplier.Margin = new Padding(5);
             cboSupplier.Name = "cboSupplier";
             cboSupplier.Size = new Size(547, 39);
             cboSupplier.TabIndex = 3;
@@ -77,7 +79,7 @@
             // btnAccept
             // 
             btnAccept.Location = new Point(214, 132);
-            btnAccept.Margin = new Padding(5, 5, 5, 5);
+            btnAccept.Margin = new Padding(5);
             btnAccept.Name = "btnAccept";
             btnAccept.Size = new Size(153, 45);
             btnAccept.TabIndex = 4;
@@ -88,7 +90,7 @@
             // btnCancel
             // 
             btnCancel.Location = new Point(405, 132);
-            btnCancel.Margin = new Padding(5, 5, 5, 5);
+            btnCancel.Margin = new Padding(5);
             btnCancel.Name = "btnCancel";
             btnCancel.Size = new Size(153, 45);
             btnCancel.TabIndex = 5;
@@ -109,7 +111,7 @@
             Controls.Add(label1);
             Controls.Add(cboProduct);
             Font = new Font("Segoe UI", 13.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            Margin = new Padding(5, 5, 5, 5);
+            Margin = new Padding(5);
             Name = "frmAddModifyProductsSuppliers";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Form1";
