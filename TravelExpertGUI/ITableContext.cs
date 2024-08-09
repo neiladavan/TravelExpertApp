@@ -148,7 +148,11 @@ namespace TravelExpertGUI
         }
         public void Search(DataGridView dataGridView, string searchText)
         {
-
+            var productSuppliers = ProductsSupplierDB.GetProductsSuppliersAsNames();
+            var filteredProductSuppliers = productSuppliers.Where(ps => ps.ProductName.ToLower().Contains(searchText) ||
+                                                                         ps.SupplierName.ToLower().Contains(searchText)).ToList();
+            dataGridView.DataSource = filteredProductSuppliers;
+            DataGridViewHelper.HideUnwantedColumns(dataGridView, new List<string> { "ProductSupplierId" });
         }
 
         public void Add()
@@ -193,7 +197,11 @@ namespace TravelExpertGUI
         }
         public void Search(DataGridView dataGridView, string searchText)
         {
-
+            var packagesProductsSuppliers = PackageDB.GetPackagesProductsSuppliers();
+            var filteredPackagesProductsSuppliers = packagesProductsSuppliers.Where(pp => pp.PkgName.ToLower().Contains(searchText) ||
+                                                                                         pp.ProductSupplierName.ToLower().Contains(searchText)).ToList();
+            dataGridView.DataSource = filteredPackagesProductsSuppliers;
+            DataGridViewHelper.HideUnwantedColumns(dataGridView, new List<string> { "PackageId", "ProductSupplierId" });
         }
 
         public void Add()

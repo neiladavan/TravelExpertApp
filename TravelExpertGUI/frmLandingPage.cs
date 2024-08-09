@@ -26,6 +26,12 @@ namespace TravelExpertGUI
                 _currentTableContext = tableContext;
                 _currentTableContext.UpdateTable(_mainDataGridView, txtSearch, btnAdd);
                 _mainDataGridView.AutoResizeColumns();
+
+                txtSearch.Text = "";
+                // Attach the TextChanged event handler for the search box
+                // Safely attach the TextChanged event handler for the search box
+                txtSearch.TextChanged -= txtSearch_TextChanged; // Always safe to unsubscribe
+                txtSearch.TextChanged += txtSearch_TextChanged; // Then subscribe
             }
             catch (Exception ex)
             {
@@ -107,7 +113,7 @@ namespace TravelExpertGUI
         // method to add functionality to modify and delete buttons populated in data grid view
         private void _mainDataGridView_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-            if (e.RowIndex < 0) return;
+            if (e.RowIndex < 0 || e.ColumnIndex < 0) return;
 
             // Get the clicked column
             DataGridViewColumn column = _mainDataGridView.Columns[e.ColumnIndex];
