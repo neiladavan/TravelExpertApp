@@ -6,14 +6,24 @@ namespace TravelExpertGUI
     {
         public static void AddModifyAndDeleteButtonsToDGV(DataGridView dataGridView)
         {
-            // Add Modify button
-            DataGridViewButtonColumn modifyColumn = new()
+            // Check if the "Modify" button column is already present
+            bool modifyButtonExists = dataGridView.Columns
+                .OfType<DataGridViewButtonColumn>()
+                .Any(c => c.Text == "Modify");
+
+            // Add the Modify and Delete buttons only if they are not already present
+            if (!modifyButtonExists)
             {
-                UseColumnTextForButtonValue = true,
-                HeaderText = "",
-                Text = "Modify"
-            };
-            dataGridView.Columns.Add(modifyColumn);
+                // Add Modify button
+                DataGridViewButtonColumn modifyColumn = new()
+                {
+                    UseColumnTextForButtonValue = true,
+                    HeaderText = "",
+                    Text = "Modify"
+                };
+
+                dataGridView.Columns.Add(modifyColumn);
+            }            
         }
 
         /// <summary>
