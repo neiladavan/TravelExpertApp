@@ -7,8 +7,17 @@ using System.Threading.Tasks;
 
 namespace TravelExpertData
 {
+    /// <summary>
+    /// Package DB class for package db operation
+    /// Author: Neil Adavan
+    /// Date: July 2024
+    /// </summary>
     public static class PackageDB
     {
+        /// <summary>
+        /// Get list of packages
+        /// </summary>
+        /// <returns>list packages</returns>
         public static List<Package> GetPackages()
         { 
             List<Package> packages = new List<Package>();
@@ -19,6 +28,10 @@ namespace TravelExpertData
             return packages;
         }
 
+        /// <summary>
+        /// Get packages using DTO to use some fields only
+        /// </summary>
+        /// <returns>list of packages</returns>
         public static List<PackageDTO> GetPackageDTOs()
         {
             using (TravelExpertsContext db = new TravelExpertsContext())
@@ -69,6 +82,10 @@ namespace TravelExpertData
             }
         }
 
+        /// <summary>
+        /// Add new package
+        /// </summary>
+        /// <param name="package">new package object data</param>
         public static void AddPackages(Package package)
         {
             using (TravelExpertsContext db = new TravelExpertsContext())
@@ -81,6 +98,10 @@ namespace TravelExpertData
             }
         }
 
+        /// <summary>
+        /// Get list of Package Product Supplier using DTO
+        /// </summary>
+        /// <returns>list of package product supplier with some fields only</returns>
         public static List<PackageProductSupplierDTO> GetPackagesProductsSuppliers()
         {
             using (TravelExpertsContext db = new TravelExpertsContext())
@@ -102,6 +123,13 @@ namespace TravelExpertData
             }
         }
 
+        /// <summary>
+        /// Author: Mackenzie
+        /// Get Product Supplier for specific package
+        /// </summary>
+        /// <param name="package">package data to be use to get product supplier</param>
+        /// <returns>list of product supplier for specific package</returns>
+
         public static List<ProductsSupplier> GetProductSuppliersForOnePackage(Package package)
         {
             List<ProductsSupplier> packageProductSuppliers = new List<ProductsSupplier>();
@@ -119,6 +147,12 @@ namespace TravelExpertData
             return packageProductSuppliers;
         }
 
+        /// <summary>
+        /// Author: Mackenzie
+        /// Get product supplier not in package
+        /// </summary>
+        /// <param name="package">package data to be use to get product supplier</param>
+        /// <returns>list of product supplier not in package</returns>
         public static List<ProductsSupplier> GetProductSuppliersNotInOnePackage(Package package)
         {
             List<ProductsSupplier> productSuppliersNotInPackage = new List<ProductsSupplier>();

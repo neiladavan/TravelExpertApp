@@ -17,11 +17,20 @@ namespace TravelExpertGUI
         // add public property for a Package entity 
         public Package? Package;
 
+        /// <summary>
+        /// Initializes a new instance of the frmAddModifyPackage form.
+        /// </summary>
         public frmAddModifyPackage()
         {
             InitializeComponent();
         }
 
+        /// <summary>
+        /// Handles the Load event of the frmAddModifyPackages form.
+        /// Sets the form title and configures the form based on whether a package is being added or modified.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The event data.</param>
         private void frmAddModifyPackages_Load(object sender, EventArgs e)
         {
             if (Package == null)
@@ -38,6 +47,9 @@ namespace TravelExpertGUI
             }
         }
 
+        /// <summary>
+        /// Displays the details of the selected package in the form fields.
+        /// </summary>
         private void DisplayPackages()
         {
             txtPackageId.Text = Package?.PackageId.ToString();
@@ -56,6 +68,12 @@ namespace TravelExpertGUI
                                                 : string.Empty;
         }
 
+        /// <summary>
+        /// Handles the Click event of the btnConfirm button.
+        /// Validates the data and, if valid, saves the package details.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The event data.</param>
         private void btnConfirm_Click(object sender, EventArgs e)
         {
             if (IsValidData()) 
@@ -78,6 +96,10 @@ namespace TravelExpertGUI
             }
         }
 
+        /// <summary>
+        /// Validates the data entered in the form fields.
+        /// </summary>
+        /// <returns>True if the data is valid; otherwise, false.</returns>
         private bool IsValidData()
         {
             bool success = false;
@@ -100,6 +122,9 @@ namespace TravelExpertGUI
             return success;
         }
 
+        /// <summary>
+        /// Populates the Package entity with data from the form fields.
+        /// </summary>
         private void PopulatePackageDate()
         {
             if (decimal.TryParse(txtPackageBasePrice.Text, NumberStyles.Currency, CultureInfo.CurrentCulture, out decimal parsedPkgBasePriceValue))

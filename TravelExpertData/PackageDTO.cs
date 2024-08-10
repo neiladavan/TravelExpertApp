@@ -6,6 +6,11 @@ using System.Threading.Tasks;
 
 namespace TravelExpertData
 {
+    /// <summary>
+    /// Package DTO with few package field
+    /// Author: Neil Adavan
+    /// Date: July 2024
+    /// </summary>
     public class PackageDTO
     {
         public int PackageId { get; set; }
