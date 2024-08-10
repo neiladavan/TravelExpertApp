@@ -1,5 +1,8 @@
 ﻿using TravelExpertData;
 
+
+// Author: Mackenzie Whitney for ITableContext structure
+// The context methods were written separately by team members
 namespace TravelExpertGUI
 {
     public interface ITableContext
@@ -9,6 +12,8 @@ namespace TravelExpertGUI
         void Add();
         void Modify(DataGridView dataGridView, DataGridViewCellEventArgs e);
     }
+
+    // Author: Neil
     public class PackagesContext : ITableContext
     {
         public void UpdateTable(DataGridView dataGridView, TextBox txtSearch, Button btnAdd)
@@ -63,7 +68,7 @@ namespace TravelExpertGUI
             
         }
     }
-
+    // Author: Jessica
     public class ProductsContext : ITableContext
     {
         public void UpdateTable(DataGridView dataGridView, TextBox txtSearch, Button btnAdd)
@@ -99,6 +104,8 @@ namespace TravelExpertGUI
             result = addModifyProductForm.ShowDialog();
         }
     }
+
+    // Author: Jessica
     public class SuppliersContext : ITableContext
     {
         public void UpdateTable(DataGridView dataGridView, TextBox txtSearch, Button btnAdd)
@@ -135,6 +142,7 @@ namespace TravelExpertGUI
         }
     }
 
+    // Author: Mackenzie
     public class ProductsSuppliersContext : ITableContext
     {
         public void UpdateTable(DataGridView dataGridView, TextBox txtSearch, Button btnAdd)
@@ -184,6 +192,8 @@ namespace TravelExpertGUI
         }
     }
 
+
+    // Author: Mackenzie
     public class PackagesProductsSuppliersContext : ITableContext
     {
         public void UpdateTable(DataGridView dataGridView, TextBox txtSearch, Button btnAdd)

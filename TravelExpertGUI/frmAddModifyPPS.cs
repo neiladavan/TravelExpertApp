@@ -1,18 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Collections.Specialized;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 using TravelExpertData;
-
+// Author: Mackenzie Whitney
 namespace TravelExpertGUI
 {
+ 
     public partial class frmAddModifyPPS : Form
     {
         List<Package> packages = [];
@@ -33,6 +24,7 @@ namespace TravelExpertGUI
             LoadProductSuppliersInPackage();
         }
 
+        // load product suppliers in both Available and Assigned lists
         private void LoadProductSuppliersInPackage()
         {
             startProductSuppliersAssigned = PackageDB.GetProductSuppliersForOnePackage((Package)(cboPackages.SelectedItem!));
@@ -43,11 +35,13 @@ namespace TravelExpertGUI
             lstProductSuppliersAvailable.Items.AddRange(startProductsSuppliersAvailable.ToArray());
         }
 
+        // change Available and Assigned lists when selected package changes
         private void cboPackages_SelectedIndexChanged(object sender, EventArgs e)
         {
             LoadProductSuppliersInPackage();
         }
 
+        // below are methods of the buttons that move product suppliers from one list to another
         private void btnAddAll_Click(object sender, EventArgs e)
         {
             var itemsToMove = lstProductSuppliersAvailable.Items;

@@ -1,9 +1,7 @@
-﻿
+﻿using Microsoft.EntityFrameworkCore;
 
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Conventions;
-using Microsoft.Identity.Client;
 
+// Author: Mackenzie, with help from Neil
 namespace TravelExpertData
 {
     public static class ProductsSupplierDB

@@ -1,6 +1,6 @@
 ﻿using System.Xml.Linq;
 using TravelExpertData;
-
+// Author: Mackenzie Whitney
 namespace TravelExpertGUI
 {
     public partial class frmAddModifyProductsSuppliers : Form
@@ -50,8 +50,12 @@ namespace TravelExpertGUI
             }
         }
 
+
+        /* if dropdowns are made to be not read only, we would need to validate the selections
+        */
         private bool validateProductSuppliers()
         {
+            if(cboProduct.SelectedValue == null || cboSupplier.SelectedValue == null) { return false; }
             return true;
         }
     }
