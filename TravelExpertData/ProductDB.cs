@@ -1,8 +1,16 @@
 ﻿
+//Jessica Pereira Lins 
+//August 2024
+//
+//The `GetProducts` method retrieves a list of all products from the database.
+//The `AddProduct` method adds a new product to the database and saves the changes.
+//The `ModifyProduct` method updates an existing product in the database and commits the changes.
+
+
 namespace TravelExpertData
 {
     public static class ProductDB
-    { 
+    {
         public static List<Product> GetProducts()
         {
             using (TravelExpertsContext db = new TravelExpertsContext())
@@ -31,14 +39,14 @@ namespace TravelExpertData
             }
         }
 
-        public static void RemoveProduct(Product product)
-        {
-            using (TravelExpertsContext db = new TravelExpertsContext())
-            {
-                db.Products.Remove(product);
-                db.SaveChanges();
-            }
-        }
+        //public static void RemoveProduct(Product product)
+        //{
+        //    using (TravelExpertsContext db = new TravelExpertsContext())
+        //    {
+        //        db.Products.Remove(product);
+        //        db.SaveChanges();
+        //    }
+        //}   We are not implementing the remove/delete functionality for this workshop.
     }
 
 }

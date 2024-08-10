@@ -10,6 +10,16 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using TravelExpertData;
 
+//Jessica Pereira Lins 
+//August,2024
+
+//Sets up a form for either adding a new supplier or
+//modifying an existing one: it configures form controls based on the presence
+//of a `Supplier` object, validates the input, and either updates the existing
+//supplier in the database or inserts a new one depending on whether the `Supplier` is null or not.
+
+
+
 namespace TravelExpertGUI
 {
     public partial class AddModifySupplier : Form
@@ -19,11 +29,18 @@ namespace TravelExpertGUI
         {
             InitializeComponent();
         }
+        //The `AddModifySupplier_Load` method configures the form when
+        //it loads based on whether a `Supplier` object is provided.
+        //If `Supplier` is `null`, it hides the supplier ID text box and label,
+        //and sets the "OK" button text to "Add." If a `Supplier` object is present,
+        //it sets the button text to "Update," populates the supplier ID text box with the supplier's ID,
+        //and fills the supplier name text box with the supplier's name.
         private void AddModifySupplier_Load(object sender, EventArgs e)
         {
             if (Supplier == null)
             {
-                txtSupID.ReadOnly = false;
+                txtSupID.Visible = false;
+                lblSupID.Visible = false;
                 btnOK.Text = "Add";
             }
             else
@@ -33,31 +50,12 @@ namespace TravelExpertGUI
                 txtSupName.Text = Supplier.SupName;
             }
         }
-
+        //The `btnOK_Click` method validates the supplier name input, updates an existing supplier
+        //or adds a new one based on whether a `Supplier` object is present, and then closes the
+        //form with a dialog result of OK.
         private void btnOK_Click(object sender, EventArgs e)
         {
-            var supplierID = txtSupID.Text;
             var supplierName = txtSupName.Text;
-
-            if (supplierID.IsNullOrEmpty())
-            {
-                MessageBox.Show("Supplier ID can not be empty");
-                return;
-            }
-
-            try
-            {
-                if (int.Parse(supplierID) <= 0)
-                {
-                    MessageBox.Show("Supplier ID must be greater than 0");
-                    return;
-                }
-            }
-            catch
-            {
-                MessageBox.Show("Supplier ID must be a number");
-                return;
-            }
 
             if (supplierName.IsNullOrEmpty())
             {
@@ -73,17 +71,8 @@ namespace TravelExpertGUI
             else
             {
                 var supplier = new Supplier();
-                supplier.SupplierId = int.Parse(supplierID);
                 supplier.SupName = supplierName;
-                try
-                {
-                    SupplierDB.AddSupplier(supplier);
-                }
-                catch
-                {
-                    MessageBox.Show("Supplier ID already exists. Please choose a different one");
-                    return;
-                }
+                SupplierDB.AddSupplier(supplier);
             }
 
             DialogResult = DialogResult.OK;

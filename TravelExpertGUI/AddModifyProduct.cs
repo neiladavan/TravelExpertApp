@@ -10,6 +10,15 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using TravelExpertData;
 
+//Jessica Pereira Lins 
+//August, 2024
+
+//The `AddModifyProduct` form allows users to either add a new product or update
+//an existing one. When the form loads, it configures itself based on whether a `Product` object is
+//provided: hiding the ID fields for adding and displaying them for updating. On clicking the OK
+//button, it validates the product name input, then either adds a new product or updates the
+//existing one using the `ProductDB` methods, and finally closes the form with a success result.
+
 namespace TravelExpertGUI
 {
     public partial class AddModifyProduct : Form
@@ -19,7 +28,9 @@ namespace TravelExpertGUI
         {
             InitializeComponent();
         }
-
+        //The `AddModifyProduct_Load` method configures the form to either add a new product
+        //or update an existing one by showing or hiding controls and setting their values based
+        //on the presence of a `Product` object.
         private void AddModifyProduct_Load(object sender, EventArgs e)
         {
             if (Product == null)
@@ -36,7 +47,9 @@ namespace TravelExpertGUI
                 txtProdName.Text = Product.ProdName;
             }
         }
-
+        //The `btnOK_Click` method validates the product name input, updates an existing product
+        //or adds a new one based on the presence of a `Product` object, and then closes the form
+        //with a dialog result of OK.
         private void btnOK_Click(object sender, EventArgs e)
         {
             var productName = txtProdName.Text;
